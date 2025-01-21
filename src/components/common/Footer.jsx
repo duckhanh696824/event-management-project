@@ -9,30 +9,35 @@ import {
   Mail,
 } from "lucide-react";
 
-const HutechLogo = ["/assets/images/logo/HUTECH.png"];
+const HutechLogo = ["/assets/images/logo/itevent3.png"];
 
 const Footer = () => {
   return (
-    <footer className=" bg-gray-800  text-white py-12 shadow-lg mt-auto">
-      <div className="container mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-8">
+    <footer className="bg-gray-800 text-white py-12 shadow-lg mt-auto">
+      <div className="container mx-auto px-4 grid grid-cols-1 sm:grid-cols-2 gap-8">
         {/* University Info Section */}
-        <div className="flex flex-col items-center md:items-start space-y-4">
+        <div className="flex flex-col items-center sm:items-start space-y-4">
           <img
             src={HutechLogo}
-            alt="Hutech University Logo"
-            className="h-20 object-contain mb-4"
+            alt="IT Event Logo"
+            className="h-20 object-contain mb-3 lg:mb-4"
           />
-          <div className="text-center md:text-left space-y-2">
-            <div className="flex items-center space-x-3">
+          <div className="flex flex-col items-center lg:block text-center space-y-4 lg:space-y-3">
+            <div className="flex justify-center space-x-3">
               <MapPin className="w-5 h-5 text-blue-300" />
-              <span className="text-sm">
+              <span className="text-sm lg:hidden">
+                Khu Công nghệ cao TP.HCM, TP.Thủ Đức, TP.HCM
+              </span>
+              <span className="hidden lg:block text-sm">
                 Khu Công nghệ cao TP.HCM, Đường D1, P.Long Thạnh Mỹ, TP.Thủ Đức,
                 TP.HCM
               </span>
             </div>
             <div className="flex items-center space-x-3">
               <Phone className="w-5 h-5 text-blue-300" />
-              <span className="text-sm">(028) 5445 7777 - (028) 2248 3333</span>
+              <span className="text-sm">
+                (028) 5445 7777 - (028) 2248 3333
+              </span>
             </div>
             <div className="flex items-center space-x-3">
               <Mail className="w-5 h-5 text-blue-300" />
@@ -42,9 +47,9 @@ const Footer = () => {
         </div>
 
         {/* Social Media Section */}
-        <div className="flex flex-col items-center md:items-start">
+        <div className="flex flex-col items-center sm:items-start">
           <h3 className="text-xl font-bold mb-6 border-b-2 border-blue-400 pb-2">
-            Connect With Us
+            Kết nối với chúng tôi
           </h3>
           <div className="flex space-x-6">
             <a
@@ -72,7 +77,7 @@ const Footer = () => {
               <Youtube className="w-7 h-7" />
             </a>
           </div>
-          <div className="mt-6 text-center md:text-left">
+          <div className="mt-6 text-center sm:text-left">
             <p className="text-sm text-blue-200">
               &copy; {new Date().getFullYear()} Hutech University. All Rights
               Reserved.
