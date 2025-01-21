@@ -56,8 +56,8 @@ const Login: React.FC = () => {
   }, []);
 
   return (
-    <div
-    className="h-screen flex flex-col items-center justify-center p-7 md:px-20 lg:p-6 overflow-hidden relative"
+  <div
+    className="h-screen flex flex-col items-center justify-center p-7 md:px-20 lg:p-6 relative"
     style={{
       backgroundImage: `url("/assets/images/login/nen.jpg")`,
       backgroundSize: "cover",
@@ -69,9 +69,9 @@ const Login: React.FC = () => {
     <div className="absolute inset-0 bg-black opacity-45"></div>
   
     {/* Main Content */}
-    <div className="relative w-full max-w-4xl bg-white rounded-2xl md:rounded-3xl shadow-2xl overflow-hidden flex flex-col lg:flex-row mt-[-55px] md:mt-[-40px] lg:mt-0">
+    <div className="relative w-full max-w-4xl bg-white rounded-2xl lg:rounded-3xl shadow-2xl flex flex-col lg:flex-row mt-[-55px] md:mt-[-40px] lg:mt-0">
       {/* Left Side */}
-      <div className="hidden lg:flex w-1/2 bg-gradient-to-tr from-indigo-600 to-purple-600 relative overflow-hidden items-center justify-center p-12">
+      <div className="hidden lg:flex w-1/2 rounded-tl-3xl rounded-bl-3xl bg-gradient-to-tr from-indigo-600 to-purple-600 relative overflow-hidden items-center justify-center p-12">
         <div className="absolute inset-0 bg-gradient-to-tr from-indigo-600 to-purple-600 opacity-70"></div>
         <div className="relative z-10 text-center text-white space-y-6">
           <h1 className="text-4xl font-bold">Chào Mừng!</h1>
@@ -95,8 +95,7 @@ const Login: React.FC = () => {
             <img
               src="/assets/images/logo/itevent1.png"
               alt="ITEvent Logo"
-              style={{ height: '70px', width: 'auto' }}
-              className="mb-1 mt-3 lg:mt-0"
+              className="h-[70px] lg:h-[60px] mb-1 mt-3 lg:mt-0"
             />
             <h3 className="text-sm text-center text-indigo-600 lg:hidden">
               HÃY ĐĂNG NHẬP ĐỂ TRUY CẬP
@@ -150,19 +149,28 @@ const Login: React.FC = () => {
               </button>
             </div>
   
-            {/* Remember Me */}
-            <div className="flex items-center">
-              <input
-                type="checkbox"
-                id="remember-me"
-                checked={rememberMe}
-                onChange={() => setRememberMe(!rememberMe)}
-                className="mr-2 focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"
-              />
-              <label htmlFor="remember-me" className="text-sm text-gray-600">
-                Nhớ mật khẩu
-              </label>
+            {/* Remember Me & Forgot Password */}
+            <div className="flex items-center justify-between">
+              <div className="flex items-center">
+                <input
+                  type="checkbox"
+                  id="remember-me"
+                  checked={rememberMe}
+                  onChange={() => setRememberMe(!rememberMe)}
+                  className="mr-2 focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"
+                />
+                <label htmlFor="remember-me" className="text-sm text-gray-600">
+                  Nhớ mật khẩu
+                </label>
+              </div>
+              <a
+                href="/forgot-password"
+                className="hidden lg:flex text-sm text-indigo-600 hover:text-indigo-500"
+              >
+                Quên mật khẩu?
+              </a>
             </div>
+            
           </div>
   
           {/* Login Button */}
