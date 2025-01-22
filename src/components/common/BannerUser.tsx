@@ -93,7 +93,7 @@ const UniversityEvents = () => {
       </section>
 
       {/* Main Content */}
-      <main className="container mx-auto px-4 py-10">
+      <main className="container mx-auto px-4 pt-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -101,11 +101,10 @@ const UniversityEvents = () => {
           className="text-center"
         >
           <h2 className="text-3xl font-bold text-gray-800 mb-4">
-            Welcome to University Events
+            Chào mừng đến với IT EVENT
           </h2>
-          <p className="text-gray-600 max-w-2xl mx-auto mb-6">
-            Stay updated with the latest university events, webinars, and tech
-            conferences.
+          <p className="text-gray-600 max-w-2xl mx-auto">
+            Nơi sẽ cập nhật những sự kiện, cuộc thi, hoạt động mới nhất từ Khoa Công nghệ Thông tin
           </p>
         </motion.div>
       </main>
