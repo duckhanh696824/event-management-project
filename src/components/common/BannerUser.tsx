@@ -100,7 +100,10 @@ const UniversityEvents = () => {
           transition={{ duration: 0.6 }}
           className="text-center"
         >
-          <h2 className="text-3xl font-bold text-gray-800 mb-4">
+          <h3 className="lg:hidden text-2xl font-bold text-gray-800 mb-2">
+            Chào mừng đến IT EVENT
+          </h3>
+          <h2 className="hidden lg:block text-3xl font-bold text-gray-800 mb-4">
             Chào mừng đến với IT EVENT
           </h2>
           <p className="text-gray-600 max-w-2xl mx-auto">

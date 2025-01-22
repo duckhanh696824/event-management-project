@@ -272,80 +272,10 @@ const EventList: React.FC<EventListProps> = ({ onEventSelect }) => {
   }
 
   return (
-    <div className="bg-gray-50 min-h-screen p-6">
-      <div className="container mx-auto grid grid-cols-3 gap-6">
-        {/* Event List Section */}
-        <div className="col-span-2 space-y-4">
-          <h1 className="text-3xl font-bold text-indigo-800 mb-6">
-            Danh sách sự kiện
-          </h1>
-          {/* {filteredEvents.length === 0 ? (
-            <div className="text-center text-gray-500 py-10">
-              Không có sự kiện nào phù hợp
-            </div>
-          ) : (
-            filteredEvents.map((event) => (
-              <EventCard
-                key={event.id}
-                event={event}
-                onSelect={(selectedEvent) =>
-                  navigate(`/event/${selectedEvent.id}`)
-                }
-              />
-            ))
-          )} */}
-          {paginatedEvents.length === 0 ? (
-            <div className="text-center text-gray-500 py-10">
-              Không có sự kiện nào phù hợp
-            </div>
-          ) : (
-            paginatedEvents.map((event) => (
-              <EventCard
-                key={event.id}
-                event={event}
-                onSelect={(selectedEvent) =>
-                  navigate(`/event/${selectedEvent.id}`)
-                }
-              />
-            ))
-          )}
-
-          {/* Pagination Controls */}
-          <div className="flex justify-center space-x-2 mt-4">
-            <button
-              className="px-3 py-2 bg-indigo-500 text-white rounded-md disabled:opacity-50 flex items-center"
-              onClick={() => handlePageChange(currentPage - 1)}
-              disabled={currentPage === 1}
-            >
-              <ArrowLeft className="mr-2 w-4 h-4" /> Trang trước
-            </button>
-            {Array.from({ length: totalPages }, (_, index) => index + 1).map(
-              (page) => (
-                <button
-                  key={page}
-                  className={`px-4 py-2 rounded-md ${
-                    page === currentPage
-                      ? "bg-indigo-700 text-white"
-                      : "bg-gray-200 text-gray-800"
-                  }`}
-                  onClick={() => handlePageChange(page)}
-                >
-                  {page}
-                </button>
-              ),
-            )}
-            <button
-              className="px-4 py-2 bg-indigo-500 text-white rounded-md disabled:opacity-50 flex items-center"
-              onClick={() => handlePageChange(currentPage + 1)}
-              disabled={currentPage === totalPages}
-            >
-              Trang sau <ArrowRight className="ml-2 w-4 h-4" /> 
-            </button>
-          </div>
-        </div>
-
+    <div className="bg-gray-50 min-h-screen px-6 pb-6">
+      <div className="container mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Calendar Section */}
-        <div className="col-span-1">
+        <div className="lg:col-span-1 order-1 lg:order-2">
           <div className="bg-white rounded-xl shadow-md p-6">
             {/* Month Navigation */}
             <div className="flex justify-between items-center mb-4">
@@ -400,7 +330,6 @@ const EventList: React.FC<EventListProps> = ({ onEventSelect }) => {
                     className={`cursor-pointer bg-gray-100 rounded-lg p-3 mb-2 hover:bg-gray-200 transition-colors ${
                       week.isAcrossMonths ? "border-2 border-indigo-200" : ""
                     }`}
-                    // Khi nhấp vào tuần, lọc sự kiện
                     onClick={() =>
                       handleWeekSelect(week.startDateObj, week.endDateObj)
                     }
@@ -426,8 +355,64 @@ const EventList: React.FC<EventListProps> = ({ onEventSelect }) => {
             </div>
           </div>
         </div>
+
+        {/* Event List Section */}
+        <div className="lg:col-span-2 order-2 lg:order-1">
+          <h1 className="text-center lg:text-left text-3xl font-bold text-indigo-800 mb-6">
+            Danh sách sự kiện
+          </h1>
+          {paginatedEvents.length === 0 ? (
+            <div className="text-center text-gray-500 py-10">
+              Không có sự kiện nào phù hợp
+            </div>
+          ) : (
+            paginatedEvents.map((event) => (
+              <EventCard
+                key={event.id}
+                event={event}
+                onSelect={(selectedEvent) =>
+                  navigate(`/event/${selectedEvent.id}`)
+                }
+              />
+            ))
+          )}
+
+          {/* Pagination Controls */}
+          <div className="flex justify-center space-x-2 mt-4">
+            <button
+              className="px-3 py-2 bg-indigo-500 text-white rounded-md disabled:opacity-50 flex items-center"
+              onClick={() => handlePageChange(currentPage - 1)}
+              disabled={currentPage === 1}
+            >
+              <ArrowLeft className="mr-2 w-4 h-4" /> Trang trước
+            </button>
+            {Array.from({ length: totalPages }, (_, index) => index + 1).map(
+              (page) => (
+                <button
+                  key={page}
+                  className={`px-4 py-2 rounded-md ${
+                    page === currentPage
+                      ? "bg-indigo-700 text-white"
+                      : "bg-gray-200 text-gray-800"
+                  }`}
+                  onClick={() => handlePageChange(page)}
+                >
+                  {page}
+                </button>
+              ),
+            )}
+            <button
+              className="px-4 py-2 bg-indigo-500 text-white rounded-md disabled:opacity-50 flex items-center"
+              onClick={() => handlePageChange(currentPage + 1)}
+              disabled={currentPage === totalPages}
+            >
+              Trang sau <ArrowRight className="ml-2 w-4 h-4" />
+            </button>
+          </div>
+        </div>
       </div>
     </div>
+
   );
 };
 
