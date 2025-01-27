@@ -1,3 +1,4 @@
+import EventManagement from "components/event/admin/EventListAdmin";
 import AdminLayout from "pages/layouts/AdminLayout";
 import React from "react";
 import { Routes, Route, useParams } from 'react-router-dom';
@@ -34,7 +35,7 @@ const AdminRoutes = () => {
       <Route path="/admin" element={<AdminLayout />}>
         {/* Nested routes cho các mục sidebar */}
         {/* <Route index element={<Dashboard />} /> */}
-        {/* <Route path="events" element={<EventManagement />} /> */}
+        <Route path="events" element={<EventManagement/>} />
         {/* <Route path="registration" element={<Registration />} />
         <Route path="event-types" element={<EventTypeList />} /> */}
         {/*<Route path="notifications" element={<Notifications />} />
