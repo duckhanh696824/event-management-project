@@ -118,7 +118,7 @@ const EventCard: React.FC<EventCardProps> = ({
       {/* <td className="px-6 py-4">{renderStatusBadge(event.status)}</td> */}
       <td className="px-6 py-4">
         <div className="flex space-x-2">
-        {/* <button
+        <button
             className="text-red-500 hover:text-red-700 transition-colors p-2 rounded-full hover:bg-blue-100"
             aria-label="Xem thông tin đăng ký"
             onClick={handleViewRegistrations} // Thêm sự kiện onClick
@@ -145,7 +145,7 @@ const EventCard: React.FC<EventCardProps> = ({
             onClick={handleUpdate}
           >
             <Edit size={18} />
-          </button> */}
+          </button>
           {/* <button
             className="text-red-500 hover:text-red-700 transition-colors p-2 rounded-full hover:bg-red-100"
             aria-label="Xóa"

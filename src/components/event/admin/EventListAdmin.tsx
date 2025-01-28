@@ -186,7 +186,139 @@ const EventManagement: React.FC = () => {
           </h1>
         </header>
 
-       
+        {/* Enhanced Advanced Filters with Modern Design */}
+        <section className="bg-white shadow-2xl rounded-3xl p-6 border border-slate-200 transition-all duration-500 ease-in-out">
+          <div className="flex justify-between items-center mb-6">
+            <h2 className="text-2xl font-bold text-slate-800 flex items-center">
+              <Filter className="mr-3 text-indigo-600" /> Bộ lọc nâng cao
+            </h2>
+            <div className="flex items-center space-x-4">
+              {(filters.searchTerm ||
+                filters.startDate ||
+                filters.endDate ||
+                filters.status !== 0 ||
+                filters.eventType !== "all") && (
+                <button
+                  onClick={clearFilters}
+                  className="flex items-center text-red-500 hover:text-red-700 transition-colors"
+                >
+                  <X className="mr-2" size={18} /> Xóa bộ lọc
+                </button>
+              )}
+              <button
+                onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}
+                className="text-indigo-600 hover:text-indigo-800 flex items-center transition-colors"
+              >
+                {showAdvancedFilters ? (
+                  <>
+                    <CheckCircle className="mr-2" size={18} /> Thu gọn
+                  </>
+                ) : (
+                  "Hiển thị bộ lọc"
+                )}
+              </button>
+            </div>
+          </div>
+
+          <div
+            className={`grid grid-cols-1 gap-6 transition-all duration-500 ${
+              showAdvancedFilters
+                ? "opacity-100 max-h-screen"
+                : "opacity-0 max-h-0 overflow-hidden"
+            }`}
+          >
+            <div className="grid md:grid-cols-2 gap-6">
+              <div>
+                <label className="block text-sm font-semibold text-slate-700 mb-3">
+                  Từ ngày
+                </label>
+                <input
+                  type="date"
+                  name="startDate"
+                  value={filters.startDate}
+                  className="block w-full py-3 px-4 rounded-xl border-2 border-slate-200 bg-slate-50 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all"
+                  onChange={handleFilterChange}
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold text-slate-700 mb-3">
+                  Đến ngày
+                </label>
+                <input
+                  type="date"
+                  name="endDate"
+                  value={filters.endDate}
+                  className="block w-full py-3 px-4 rounded-xl border-2 border-slate-200 bg-slate-50 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all"
+                  onChange={handleFilterChange}
+                />
+              </div>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-6">
+              {/* <div>
+                <label className="block text-sm font-semibold text-slate-700 mb-3">
+                  Trạng thái sự kiện
+                </label>
+                <select
+                  name="status"
+                  value={filters.status}
+                  className="block w-full py-3 px-4 rounded-xl border-2 border-slate-200 bg-slate-50 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all"
+                  onChange={handleFilterChange}
+                >
+                  <option value={0}>Tất cả trạng thái</option>
+                  <option value={1}>Sắp diễn ra</option>
+                  <option value={2}>Đang diễn ra</option>
+                  <option value={3}>Đã kết thúc</option>
+                </select>
+              </div> */}
+              <div>
+                <label
+                  htmlFor="search"
+                  className="block text-sm font-semibold text-slate-700 mb-3"
+                >
+                  Tìm kiếm sự kiện
+                </label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                    <Search className="h-5 w-5 text-slate-400" />
+                  </div>
+                  <input
+                    id="search"
+                    type="text"
+                    placeholder="Nhập từ khóa..."
+                    value={filters.searchTerm}
+                    className="pl-12 pr-4 py-3 block w-full rounded-xl border-2 border-slate-200 bg-slate-50 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all"
+                    onChange={handleFilterChange}
+                    name="searchTerm"
+                  />
+                </div>
+              </div>
+              <div>
+                <label className="block text-sm font-semibold text-slate-700 mb-3">
+                  Loại sự kiện
+                </label>
+                <select
+                  name="eventType"
+                  value={filters.eventType}
+                  className="block w-full py-3 px-4 rounded-xl border-2 border-slate-200 bg-slate-50 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all"
+                  onChange={(e) =>
+                    setFilters({ ...filters, eventType: e.target.value })
+                  }
+                >
+                  <option value="all">Tất cả loại sự kiện</option>
+                  {dropdownData &&
+                    dropdownData.eventTypes &&
+                    dropdownData.eventTypes.map((type) => (
+                      <option key={type.id} value={type.id}>
+                        {type.name}
+                      </option>
+                    ))}
+                </select>
+              </div>
+            </div>
+          </div>
+        </section>
 
         {/* Events Table with Enhanced Design */}
         <section className="bg-white shadow-xl rounded-3xl overflow-hidden border border-slate-200">
