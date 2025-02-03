@@ -84,7 +84,45 @@ const CreateEventForm: React.FC = () => {
     }));
   };
 
- 
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file && file.type.startsWith("image/")) {
+      try {
+        // Upload image và nhận phản hồi từ API
+        const response = await uploadEventImage(file);
+
+        // Log toàn bộ response để kiểm tra
+        console.log("Response from image upload:", response);
+
+        // Đảm bảo rằng response.data có chứa base64Image
+        const base64Image = response.data?.base64Image;
+        if (base64Image) {
+          console.log("Uploaded Base64 Image:", base64Image);
+
+          // Cập nhật formData với base64 image
+          setFormData((prev) => ({
+            ...prev,
+            image: file as any, // Lưu base64 vào formData
+          }));
+
+          // Tạo preview ảnh
+          const reader = new FileReader();
+          reader.onload = (event) => {
+            setImagePreview(event.target?.result as string);
+          };
+          reader.readAsDataURL(file);
+        } else {
+          console.error("Base64 image không được trả về từ API");
+          alert("Không nhận được base64 image từ API");
+        }
+      } catch (error) {
+        console.error("Image upload failed", error);
+        alert("Tải ảnh thất bại");
+      }
+    } else {
+      alert("Vui lòng chọn một tệp hình ảnh.");
+    }
+  };
 
   const handleRemoveImage = () => {
     setImagePreview(null);
@@ -131,6 +169,39 @@ const CreateEventForm: React.FC = () => {
     return true;
   };
 
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!validateForm()) return;
+
+    try {
+
+      const submissionData = {
+        ...formData,
+        start_time: formData.start_time
+          ? new Date(formData.start_time)
+              .toLocaleString("sv-SE")
+              .replace(",", "")
+          : "",
+        end_time: formData.end_time
+          ? new Date(formData.end_time).toLocaleString("sv-SE").replace(",", "")
+          : "",
+        registration_deadline: formData.registration_deadline
+          ? new Date(formData.registration_deadline)
+              .toLocaleString("sv-SE")
+              .replace(",", "")
+          : "",
+        is_online: (is_online ? 1 : 0) as any,
+        image: formData.image, // Ensure this is passed
+      };
+      const response = await createEvent(submissionData);
+      resetForm();
+    } catch (error) {
+      console.error(error);
+      alert("Tạo sự kiện thất bại");
+    }
+  };
+
   return (
     <div className="bg-background min-h-screen p-5 max-h-[500px] overflow-y-auto">
       <div className="bg-white w-full max-w-4xl rounded-3xl shadow-lg p-10">
@@ -144,7 +215,7 @@ const CreateEventForm: React.FC = () => {
           </p>
         </div>
 
-        <form >
+        <form onSubmit={handleSubmit}>
           {/* Basic Information Section */}
           <div className="bg-gray-50 rounded-2xl p-6 mb-8">
             <div className="flex items-center text-indigo-800 mb-6 gap-2">
@@ -165,6 +236,7 @@ const CreateEventForm: React.FC = () => {
                   id="title"
                   name="title"
                   required
+                  value={formData.title}
                   onChange={handleInputChange}
                   placeholder="Nhập tên sự kiện"
                   className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
@@ -182,6 +254,7 @@ const CreateEventForm: React.FC = () => {
                   id="description"
                   name="description"
                   required
+                  value={formData.description}
                   onChange={handleInputChange}
                   placeholder="Mô tả ngắn gọn về sự kiện"
                   className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl min-h-[120px] focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 "
@@ -198,6 +271,8 @@ const CreateEventForm: React.FC = () => {
                 <textarea
                   id="content"
                   name="content"
+                  value={formData.content}
+                  onChange={handleInputChange}
                   placeholder="Nội dung chi tiết của sự kiện"
                   className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl min-h-[120px] focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 resize-none"
                 />
@@ -224,7 +299,9 @@ const CreateEventForm: React.FC = () => {
                   type="datetime-local"
                   id="startTime"
                   name="start_time"
-                 
+                  required
+                  value={formData.start_time}
+                  onChange={handleInputChange}
                   className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
                 />
               </div>
@@ -239,6 +316,9 @@ const CreateEventForm: React.FC = () => {
                   type="datetime-local"
                   id="end_time"
                   name="end_time"
+                  required
+                  value={formData.end_time}
+                  onChange={handleInputChange}
                   className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
                 />
               </div>
@@ -252,10 +332,13 @@ const CreateEventForm: React.FC = () => {
                 <label className="relative inline-flex items-center cursor-pointer">
                   <input
                     type="checkbox"
+                    checked={is_online}
+                    onChange={() => setIsOnline(!is_online)}
                     className="sr-only peer"
                   />
                   <div className="w-14 h-7 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-indigo-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-green-600"></div>
                 </label>
+                <span>{is_online ? "Online" : "Offline"}</span>
               </div>
             </div>
 
@@ -270,7 +353,9 @@ const CreateEventForm: React.FC = () => {
                 type="text"
                 id="site"
                 name="site"
-              
+                required
+                value={formData.site}
+                onChange={handleInputChange}
                 placeholder="Nhập địa điểm tổ chức"
                 className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
               />
@@ -297,7 +382,15 @@ const CreateEventForm: React.FC = () => {
                   id="maxParticipants"
                   name="maxParticipants"
                   min="0"
-                
+                  value={formData.max_participants}
+                  onChange={(e) => {
+                    // Chuyển đổi giá trị nhập vào thành số và đảm bảo không âm
+                    const value = Math.max(0, parseInt(e.target.value) || 0);
+                    setFormData((prev) => ({
+                      ...prev,
+                      max_participants: value,
+                    }));
+                  }}
                   placeholder="Không giới hạn"
                   className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
                 />
@@ -313,6 +406,8 @@ const CreateEventForm: React.FC = () => {
                   type="datetime-local"
                   id="registration_deadline"
                   name="registration_deadline"
+                  value={formData.registration_deadline}
+                  onChange={handleInputChange}
                   className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
                 />
               </div>
@@ -338,11 +433,17 @@ const CreateEventForm: React.FC = () => {
                 <select
                   id="eventTypeId"
                   name="event_type_id"
-                 
+                  required
+                  value={formData.event_type_id}
+                  onChange={handleInputChange}
                   className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
                 >
                   <option value="">Chọn loại sự kiện</option>
-                
+                  {dropdownData.eventTypes.map((eventType) => (
+                    <option key={eventType.id} value={eventType.id}>
+                      {eventType.name}
+                    </option>
+                  ))}
                 </select>
               </div>
 
@@ -358,9 +459,16 @@ const CreateEventForm: React.FC = () => {
                   id="semesterId"
                   name="semester_id"
                   required
+                  value={formData.semester_id}
+                  onChange={handleInputChange}
                   className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
                 >
-                
+                  <option value="">Chọn học kỳ</option>
+                  {dropdownData.semesters.map((semester) => (
+                    <option key={semester.id} value={semester.id}>
+                      {semester.name}
+                    </option>
+                  ))}
                 </select>
               </div>
 
@@ -375,10 +483,17 @@ const CreateEventForm: React.FC = () => {
                 <select
                   id="academicYearId"
                   name="academic_year_id"
-                
+                  required
+                  value={formData.academic_year_id}
+                  onChange={handleInputChange}
                   className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
                 >
-                 
+                  <option value="">Chọn năm học</option>
+                  {dropdownData.academicYears.map((academicYear) => (
+                    <option key={academicYear.id} value={academicYear.id}>
+                      {academicYear.name}
+                    </option>
+                  ))}
                 </select>
               </div>
             </div>
@@ -406,6 +521,7 @@ const CreateEventForm: React.FC = () => {
                       type="file"
                       id="fileInput"
                       accept="image/*"
+                      onChange={handleFileUpload}
                       className="hidden"
                     />
                   </>
