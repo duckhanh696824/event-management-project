@@ -1,10 +1,10 @@
 import EventManagement from "components/event/admin/EventListAdmin";
 import CreateEventPage from "pages/admin/CreateEventPage";
+import DetailEventAdminPage from "pages/admin/DetailEventAdminPage";
 import AdminLayout from "pages/layouts/AdminLayout";
 import React from "react";
 import { Routes, Route, useParams } from 'react-router-dom';
 // import Dashboard from "components/common/StatisticsDashboard";
-// import EventManagement from "../pages/admin/EventManagement";
 // import Registration from "components/Registration/RegistrationTable";
 // import Notifications from "../pages/admin/Notifications";
 // import Attendance from "../pages/admin/Attendance";
@@ -38,6 +38,7 @@ const AdminRoutes = () => {
         {/* <Route index element={<Dashboard />} /> */}
         <Route path="events" element={<EventManagement/>} />
         <Route path="create-event" element={<CreateEventPage/>} />
+        <Route path="/admin/event-detail/:eventId" element={<DetailEventAdminPage/>} />
         {/* <Route path="registration" element={<Registration />} />
         <Route path="event-types" element={<EventTypeList />} /> */}
         {/*<Route path="notifications" element={<Notifications />} />
