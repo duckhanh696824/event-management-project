@@ -1,6 +1,7 @@
 import EventManagement from "components/event/admin/EventListAdmin";
 import CreateEventPage from "pages/admin/CreateEventPage";
 import DetailEventAdminPage from "pages/admin/DetailEventAdminPage";
+import UpdateEventPage from "pages/admin/UpdateEventPage";
 import AdminLayout from "pages/layouts/AdminLayout";
 import React from "react";
 import { Routes, Route, useParams } from 'react-router-dom';
@@ -39,6 +40,7 @@ const AdminRoutes = () => {
         <Route path="events" element={<EventManagement/>} />
         <Route path="create-event" element={<CreateEventPage/>} />
         <Route path="/admin/event-detail/:eventId" element={<DetailEventAdminPage/>} />
+        <Route path="/admin/event-update/:eventId" element={<UpdateEventPage />} />
         {/* <Route path="registration" element={<Registration />} />
         <Route path="event-types" element={<EventTypeList />} /> */}
         {/*<Route path="notifications" element={<Notifications />} />
