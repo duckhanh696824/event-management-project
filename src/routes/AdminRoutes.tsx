@@ -48,12 +48,8 @@ const AdminRoutes = () => {
         <Route path="results" element={<Results />} />
         <Route path="statistics" element={<Statistics />} />
         <Route path="settings" element={<Settings />} /> */}
-        {/* <Route path="/admin/update-event/:eventId" element={<UpdateEventForm />} /> */}
         {/* <Route path="events/:eventId/poster/edit" element={<PosterEditorWrapper />} />
         <Route path="events/:eventId/poster" element={<PosterViewerWrapper />} />
-        <Route path="create-event" element={<CreateEventForm />} />
-        <Route path="/admin/event-update/:eventId" element={<UpdateEventForm />} />
-        <Route path="/admin/event-detail/:eventId" element={<EventDetailAdmin />} />
         <Route  path="/admin/event-registrations/:eventId" element={<RegistrationUser />}  /> */}
         </Route>
       </Routes>
