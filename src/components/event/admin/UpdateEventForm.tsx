@@ -140,29 +140,44 @@ const UpdateEventForm: React.FC = () => {
         status: 1,
       });
 
-      const handleDeleteEvent = async () => {
-        if (!eventId) {
-          alert("Không tìm thấy sự kiện để xóa!");
-          return;
-        }
-      
-  
-    try {
-      await deleteEvent(eventId); // API call để xóa sự kiện
-      showToast({ message: "Xóa sự kiện thành công", statusCode: 200 });
-      setIsDeleteModalOpen(false); // Đóng modal
-      navigate("/admin/events"); // Điều hướng về trang danh sách sự kiện
-    } catch (error) {
-      console.error("Lỗi khi xóa sự kiện:", error);
-      showToast({ message: "Không thể xóa sự kiện", statusCode: 400 });
-    }
-  };
+   
 
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [is_online, setIsOnline] = useState<boolean>(false);
 
- 
+    const handleCheckboxChange = () => {
+      const newIsOnline = !is_online;
+      setIsOnline(newIsOnline); // Cập nhật trạng thái cục bộ
+      if (event) {
+        setEvent({
+          ...event,
+          is_online: newIsOnline,
+          title: event.title || "", // Cung cấp giá trị mặc định nếu undefined
+          description: event.description || "",
+          content: event.content || "",
+          start_time: event.start_time || "",
+          end_time: event.end_time || "",
+          site: event.site || "",
+        });
+      }
+    };
+
+    const handleMaxParticipantsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      if (event) {
+        const value = Math.max(0, parseInt(e.target.value) || 0);
+    
+        setEvent((prevEvent) => {
+          if (prevEvent) {
+            return {
+              ...prevEvent,
+              max_participants: value,
+            };
+          }
+          return prevEvent;  // Trả về prevEvent nếu nó là null hoặc undefined
+        });
+      }
+    };
   
 
 
@@ -217,7 +232,46 @@ const validateForm = (): boolean => {
     }
   }, [event]);// Chỉ theo dõi event, không sử dụng trực tiếp event.image
 
- 
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+
+    if (!file) {
+      alert("Vui lòng chọn một tệp hình ảnh.");
+      return;
+    }
+    setImageFile(file);
+    // Kiểm tra định dạng file
+    const validExtensions = ["image/png", "image/jpeg", "image/jpg"];
+    if (!validExtensions.includes(file.type)) {
+      alert("Chỉ hỗ trợ tải lên các định dạng PNG, JPEG hoặc JPG.");
+      return;
+    }
+
+    if (file && file.type.startsWith("image/")) {
+      try {
+        // Upload image và nhận phản hồi từ API
+        const response = await uploadEventImage(file);
+
+        // Đảm bảo rằng response.data có chứa base64Image
+        const base64Image = response.data?.base64Image;
+        if (base64Image) {
+          // Cập nhật formData với base64 image
+          setFormData((prev) => ({
+            ...prev,
+            image: base64Image, // Lưu base64 vào formData
+          }));
+          setImagePreview(base64Image); 
+        } else {
+          alert("Không nhận được base64 image từ API");
+        }
+      } catch (error) {
+        console.error("Image upload failed", error);
+        alert("Tải ảnh thất bại");
+      }
+    } else {
+      alert("Vui lòng chọn một tệp hình ảnh.");
+    }
+  };
 
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -304,6 +358,8 @@ const validateForm = (): boolean => {
                   id="title"
                   name="title"
                   required
+                  value={event.title}
+                  onChange={handleInputChange}
                   placeholder="Nhập tên sự kiện"
                   className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
                 />
@@ -319,7 +375,8 @@ const validateForm = (): boolean => {
                   id="description"
                   name="description"
                   required
-
+                  value={event.description}
+                  onChange={handleInputChange}
                   placeholder="Mô tả ngắn gọn về sự kiện"
                   className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl min-h-[120px] focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 "
                 />
@@ -334,7 +391,9 @@ const validateForm = (): boolean => {
                 <textarea
                   id="content"
                   name="content"
-
+                  value={event.content}
+                  // readOnly
+                  onChange={handleInputChange}
                   placeholder="Nội dung chi tiết của sự kiện"
                   className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl min-h-[120px] focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 resize-none"
                 />
@@ -361,7 +420,8 @@ const validateForm = (): boolean => {
                   id="startTime"
                   name="start_time"
                   required
-
+                  value={event.start_time}
+                  onChange={handleInputChange}
                   className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
                 />
               </div>
@@ -376,7 +436,8 @@ const validateForm = (): boolean => {
                   id="end_time"
                   name="end_time"
                   required
-          
+                  value={event.end_time}
+                  onChange={handleInputChange}
                   className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
                 />
               </div>
@@ -391,7 +452,8 @@ const validateForm = (): boolean => {
                   <input
                     type="checkbox"
                     id="isOnline"
-             
+                    checked={event.is_online}
+                    onChange={handleCheckboxChange}
                     className="sr-only peer"
                   />
                   <div className="w-14 h-7 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-indigo-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-green-600"></div>
@@ -411,7 +473,8 @@ const validateForm = (): boolean => {
                 id="site"
                 name="site"
                 required
-              
+                value={event.site}
+                onChange={handleInputChange}
                 placeholder="Nhập địa điểm tổ chức"
                 className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
               />
@@ -437,7 +500,8 @@ const validateForm = (): boolean => {
                   id="maxParticipants"
                   name="max_participants"
                   min="0"
-                 
+                  value={event.max_participants}
+                  onChange={handleMaxParticipantsChange}
                   placeholder="Không giới hạn"
                   className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
                 />
@@ -453,7 +517,9 @@ const validateForm = (): boolean => {
                   type="datetime-local"
                   id="registration_deadline"
                   name="registration_deadline"
-     
+                  value={event.registration_deadline}
+                  required
+                  onChange={handleInputChange}
                   className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
                 />
               </div>
@@ -479,10 +545,16 @@ const validateForm = (): boolean => {
                   id="eventTypeId"
                   name="event_type_id"
                   required
+                  value={event?.event_type_id || ""}
+                  onChange={handleInputChange}
                   className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
                 >
                   <option value="">Chọn loại sự kiện</option>
-                
+                  {dropdownData?.eventTypes.map((type) => (
+                    <option key={type.id} value={type.id}>
+                      {type.name}
+                    </option>
+                  ))}
                 </select>
               </div>
 
@@ -497,11 +569,16 @@ const validateForm = (): boolean => {
                   id="semesterId"
                   name="semester_id"
                   required
-                
+                  value={event?.semester_id || ""}
+                  onChange={handleInputChange}
                   className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
                 >
                   <option value="">Chọn học kỳ</option>
-               
+                  {dropdownData?.semesters.map((semester) => (
+                    <option key={semester.id} value={semester.id}>
+                      {semester.name}
+                    </option>
+                  ))}
                 </select>
               </div>
 
@@ -516,10 +593,16 @@ const validateForm = (): boolean => {
                   id="academicYearId"
                   name="academic_year_id"
                   required
+                  value={event?.academic_year_id || ""}
+                  onChange={handleInputChange}
                   className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
                 >
                   <option value="">Chọn năm học</option>
-                
+                  {dropdownData?.academicYears.map((academicYear) => (
+                    <option key={academicYear.id} value={academicYear.id}>
+                      {academicYear.name}
+                    </option>
+                  ))}
                 </select>
               </div>
             </div>
@@ -547,6 +630,7 @@ const validateForm = (): boolean => {
                       type="file"
                       id="fileInput"
                       accept="image/*"
+                      onChange={handleFileUpload}
                       className="hidden"
                     />
                   </>
@@ -585,6 +669,7 @@ const validateForm = (): boolean => {
                 type="file"
                 id="fileInput"
                 accept="image/*"
+                onChange={handleFileUpload}
                 className="hidden"
               />
         
@@ -598,43 +683,7 @@ const validateForm = (): boolean => {
               >
                 <Trash className="mr-2 text-xs"/> Xóa sự kiện
               </button>
-              {/* Modal Xác Nhận */}
-              <div>
-                <div >
-                    <Modal
-                      isOpen={isDeleteModalOpen}
-                      onRequestClose={() => setIsDeleteModalOpen(false)} // Đóng modal
-                      className="modal-class"
-                      
-                      overlayClassName="bg-black bg-opacity-50 fixed inset-0 flex items-center justify-center"
-                    >
-                      <div className="bg-white rounded-lg p-5 max-w-md mx-auto relative shadow-lg">
-                        <div className="flex items-center space-x-2 mt-2">
-                          <Trash className=" text-lg"/>
-                          <h2 className="text-lg font-semibold">Bạn có chắc chắn muốn xóa sự kiện này?</h2>
-                          {/* <p>Hành động này không thể hoàn tác.</p> */}
-                        </div>
-
-                        <div className="flex justify-end space-x-4 mt-6 ">
-                          <button
-                            className="px-4 py-2 bg-gray-300 rounded-lg hover:bg-gray-400 transition-all"
-                            onClick={() => setIsDeleteModalOpen(false)} // Đóng modal
-                          >
-                            Hủy
-                          </button>
-                          <button
-                            className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-700 transition-all"
-                            onClick={handleDeleteEvent} // Gọi hàm xóa
-                          >
-                            Xác nhận xóa
-                          </button>
-                        </div>
-                      </div>
-          
-                  </Modal>
-                </div>
-
-              </div>
+             
        
               <div className="mt-6 flex justify-end space-x-4">
                 <button
