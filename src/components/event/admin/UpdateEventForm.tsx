@@ -140,7 +140,23 @@ const UpdateEventForm: React.FC = () => {
         status: 1,
       });
 
-   
+      const handleDeleteEvent = async () => {
+        if (!eventId) {
+          alert("Không tìm thấy sự kiện để xóa!");
+          return;
+        }
+      
+  
+    try {
+      await deleteEvent(eventId); // API call để xóa sự kiện
+      showToast({ message: "Xóa sự kiện thành công", statusCode: 200 });
+      setIsDeleteModalOpen(false); // Đóng modal
+      navigate("/admin/events"); // Điều hướng về trang danh sách sự kiện
+    } catch (error) {
+      console.error("Lỗi khi xóa sự kiện:", error);
+      showToast({ message: "Không thể xóa sự kiện", statusCode: 400 });
+    }
+  };
 
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
@@ -683,7 +699,43 @@ const validateForm = (): boolean => {
               >
                 <Trash className="mr-2 text-xs"/> Xóa sự kiện
               </button>
-             
+              {/* Modal Xác Nhận */}
+              <div>
+                <div >
+                    <Modal
+                      isOpen={isDeleteModalOpen}
+                      onRequestClose={() => setIsDeleteModalOpen(false)} // Đóng modal
+                      className="modal-class"
+                      
+                      overlayClassName="bg-black bg-opacity-50 fixed inset-0 flex items-center justify-center"
+                    >
+                      <div className="bg-white rounded-lg p-5 max-w-md mx-auto relative shadow-lg">
+                        <div className="flex items-center space-x-2 mt-2">
+                          <Trash className=" text-lg"/>
+                          <h2 className="text-lg font-semibold">Bạn có chắc chắn muốn xóa sự kiện này?</h2>
+                          {/* <p>Hành động này không thể hoàn tác.</p> */}
+                        </div>
+
+                        <div className="flex justify-end space-x-4 mt-6 ">
+                          <button
+                            className="px-4 py-2 bg-gray-300 rounded-lg hover:bg-gray-400 transition-all"
+                            onClick={() => setIsDeleteModalOpen(false)} // Đóng modal
+                          >
+                            Hủy
+                          </button>
+                          <button
+                            className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-700 transition-all"
+                            onClick={handleDeleteEvent} // Gọi hàm xóa
+                          >
+                            Xác nhận xóa
+                          </button>
+                        </div>
+                      </div>
+          
+                  </Modal>
+                </div>
+
+              </div>
        
               <div className="mt-6 flex justify-end space-x-4">
                 <button
