@@ -4,8 +4,16 @@ import { Filter, RefreshCcw, ArrowLeft, Scan } from "lucide-react";
 import { getAllRegistrationUsers } from "api/eventsApi";
 
 const EventRegistrationForm = () => {
-  const [registrations, setRegistrations] = useState([]);
-  const [filteredRegistrations, setFilteredRegistrations] = useState([]);
+  type Registration = {
+    user_id: string;
+    nickname: string;
+    username: string;
+    email: string;
+    registration_time: string;
+  };
+ 
+  const [registrations, setRegistrations] = useState<Registration[]>([]);
+  const [filteredRegistrations, setFilteredRegistrations] = useState<Registration[]>([]);
   const [search, setSearch] = useState({
     name: "",
     mssv: "",
@@ -54,7 +62,13 @@ const EventRegistrationForm = () => {
           const response = await getAllRegistrationUsers(eventId);
   
           // Directly use response.data which contains the user list
-          const registrationData = response.data || [];
+          const registrationData: Registration[] = (response.data || []).map((item: any) => ({
+            user_id: item.user_id ?? "",
+            nickname: item.nickname ?? "",
+            username: item.username ?? "",
+            email: item.email ?? "",
+            registration_time: item.registration_time ?? "",
+          }));
   
           setRegistrations(registrationData);
           setFilteredRegistrations(registrationData);
@@ -182,7 +196,7 @@ const EventRegistrationForm = () => {
                 ))
             ) : (
                 <tr>
-                <td colSpan="5" className="text-center py-6 text-gray-500">
+                <td colSpan={5} className="text-center py-6 text-gray-500">
                     Chưa có sinh viên đăng ký.
                 </td>
                 </tr>
