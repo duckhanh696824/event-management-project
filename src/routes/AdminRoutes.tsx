@@ -1,11 +1,13 @@
 import EventManagement from "components/event/admin/EventListAdmin";
-
+import UpdateEventPage from "pages/admin/event/UpdateEventPage";
 import CreateEventPage from "pages/admin/event/CreateEventPage";
-
 import DetailEventAdminPage from "pages/admin/DetailEventAdminPage";
 import EventTypeListPage from "pages/admin/event-type/EventTypeListPage";
 import EventRegistrationPage from "pages/admin/EventRegistrationPage";
-import UpdateEventPage from "pages/admin/UpdateEventPage";
+import EventTypeListPage from "pages/admin/event-type/EventTypeListPage";
+
+
+
 
 import AdminLayout from "pages/layouts/AdminLayout";
 import React from "react";
