@@ -1,11 +1,9 @@
 import EventManagement from "components/event/admin/EventListAdmin";
-
-import UpdateEventPage from "pages/admin/event/UpdateEventPage";
-import CreateEventPage from "pages/admin/event/CreateEventPage";
 import DetailEventAdminPage from "pages/admin/event/DetailEventAdminPage";
 import EventTypeListPage from "pages/admin/event-type/EventTypeListPage";
 import EventRegistrationPage from "pages/admin/EventRegistrationPage";
-
+import UpdateEventPage from "pages/admin/event/UpdateEventPage";
+import CreateEventPage from "pages/admin/event/CreateEventPage";
 import AdminLayout from "pages/layouts/AdminLayout";
 import React from "react";
 import { Routes, Route, useParams } from 'react-router-dom';
@@ -30,6 +28,9 @@ const AdminRoutes = () => {
         <Route path="events" element={<EventManagement/>} />
         <Route path="create-event" element={<CreateEventPage/>} />
         <Route path="/admin/event-detail/:eventId" element={<DetailEventAdminPage/>} />
+        <Route path="/admin/event-update/:eventId" element={<UpdateEventPage />} />
+        <Route path="/admin/event-registrations/:eventId" element={<EventRegistrationPage />} />
+        <Route path="event-types" element={<EventTypeListPage />} />
         {/* <Route path="registration" element={<Registration />} />
         <Route path="event-types" element={<EventTypeList />} /> */}
         {/*<Route path="notifications" element={<Notifications />} />
@@ -37,12 +38,8 @@ const AdminRoutes = () => {
         <Route path="results" element={<Results />} />
         <Route path="statistics" element={<Statistics />} />
         <Route path="settings" element={<Settings />} /> */}
-        {/* <Route path="/admin/update-event/:eventId" element={<UpdateEventForm />} /> */}
         {/* <Route path="events/:eventId/poster/edit" element={<PosterEditorWrapper />} />
         <Route path="events/:eventId/poster" element={<PosterViewerWrapper />} />
-        <Route path="create-event" element={<CreateEventForm />} />
-        <Route path="/admin/event-update/:eventId" element={<UpdateEventForm />} />
-        <Route path="/admin/event-detail/:eventId" element={<EventDetailAdmin />} />
         <Route  path="/admin/event-registrations/:eventId" element={<RegistrationUser />}  /> */}
         </Route>
       </Routes>
