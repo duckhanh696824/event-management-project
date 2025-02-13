@@ -1,27 +1,13 @@
 import EventManagement from "components/event/admin/EventListAdmin";
-import UpdateEventPage from "pages/admin/event/UpdateEventPage";
-import CreateEventPage from "pages/admin/event/CreateEventPage";
-import DetailEventAdminPage from "pages/admin/DetailEventAdminPage";
+import DetailEventAdminPage from "pages/admin/event/DetailEventAdminPage";
 import EventTypeListPage from "pages/admin/event-type/EventTypeListPage";
 import EventRegistrationPage from "pages/admin/EventRegistrationPage";
+import UpdateEventPage from "pages/admin/event/UpdateEventPage";
+import CreateEventPage from "pages/admin/event/CreateEventPage";
 import AdminLayout from "pages/layouts/AdminLayout";
 import React from "react";
 import { Routes, Route, useParams } from 'react-router-dom';
-// import Dashboard from "components/common/StatisticsDashboard";
-// import Registration from "components/Registration/RegistrationTable";
-// import Notifications from "../pages/admin/Notifications";
-// import Attendance from "../pages/admin/Attendance";
-// import Results from "../pages/admin/Results";
-// import Statistics from "../pages/admin/Statistics";
-// import Settings from "../pages/admin/Settings";
-// import CreateEventForm from "pages/admin/event/CreateEventForm";
-// import EventManagement from "components/event/admin/EventListAdmin";
-// import RegistrationUser from "components/Registration/RegistrationUser";
-// import UpdateEventForm from "components/event/admin/UpdateEventForm";
-// import EventDetailAdmin from "components/event/admin/EventDetailAdmin";
-// import EventTypeList from "components/event_type/EventTypeList";
-// import  PosterEditor   from "components/event/admin/PosterEditor";
-// import { PosterViewer } from "components/event/admin/PosterViewer";
+
 
 // const PosterEditorWrapper = () => {
 //   const { eventId } = useParams<{ eventId: string }>();
