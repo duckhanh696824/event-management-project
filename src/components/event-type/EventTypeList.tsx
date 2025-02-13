@@ -16,6 +16,7 @@ import {
 } from 'api/eventTypeApi';
 import { showToast } from "utils/toast";
 import { useNavigate } from "react-router-dom";
+import CreateEventTypeForm from './CreateEventTypeForm';
 
 const EventTypeList: React.FC = () => {
   const [eventTypes, setEventTypes] = useState<EventType[]>([]);
@@ -52,7 +53,55 @@ const EventTypeList: React.FC = () => {
     fetchEventTypes();
   }, []);
 
+  const handleSaveNewEventType = async (name: string) => {
+    setLoading(true);
+    try {
+      // Check for duplicates
+      if (eventTypes.some((eventType) => eventType.name.toLowerCase() === name.toLowerCase())) {
+        showToast({
+          statusCode: 400,
+          message: "Loại sự kiện đã tồn tại"
+        });
+        return;
+      }
+  
+      const response = await createEventType(name);
+      console.log('Create response:', response); // Kiểm tra phản hồi từ API
+      if (response?.statusCode === 201 && response.data) {
+
+
+        setIsCreating(false); // Thoát popup
+              // Đặt lại trang hiện tại (nếu cần)
+        setCurrentPage(Math.ceil((eventTypes.length + 1) / eventsPerPage));
+        // setIsCreating(false); // Thoát popup
+
+        showToast({
+          statusCode: 201,
+          message: "Tạo loại sự kiện thành công",
+        });
+        // await fetchEventTypes(); // Fetch lại danh sách sau khi tạo
+      } else if (response?.statusCode && response?.statusCode !== 201) {
+        showToast({
+          statusCode: response.statusCode,
+          message: response.message || "Không thể tạo loại sự kiện",
+        });
+      }
+    } catch (error) {
+      console.error("Error creating event type:", error);
+      showToast({
+        statusCode: 500,
+        message: "Đã xảy ra lỗi khi tạo loại sự kiện"
+      });
+    } finally {
+      setLoading(false);
+      setIsCreating(false); // Thoát popup
+      await fetchEventTypes();
+    }
+  };
    
+  const handleCancelCreate = () => {
+    setIsCreating(false);
+  };
 
   if (loading && eventTypes.length === 0) {
     return (
@@ -84,13 +133,19 @@ const EventTypeList: React.FC = () => {
             Danh sách loại sự kiện
           </h2>
           <button
-            className="flex items-center bg-gradient-to-r from-indigo-600 to-blue-600 text-white px-4 py-2 rounded-lg hover:from-indigo-700 hover:to-blue-700 transition-all shadow-lg hover:shadow-xl"
+            onClick={() => setIsCreating(true)}
+            className="flex items-center bg-gradient-to-r from-indigo-600 to-blue-600 text-white pl-3 pr-4 py-2 rounded-lg hover:from-indigo-700 hover:to-blue-700 transition-all shadow-lg hover:shadow-xl"
           >
-            <Plus className="mr-2 h-5 w-5" /> Thêm loại sự kiện
+            <Plus className="mr-1 h-5 w-5" /> Thêm loại sự kiện
           </button>
         </div>
 
-   
+        {isCreating && (
+          <CreateEventTypeForm
+            onSave={handleSaveNewEventType}
+            onCancel={handleCancelCreate}
+          />
+        )}   
 
         {error && (
           <div className="p-4 text-red-600 bg-red-50 border-b border-red-100">
