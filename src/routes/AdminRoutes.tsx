@@ -1,8 +1,18 @@
 import EventManagement from "components/event/admin/EventListAdmin";
+<<<<<<< feature/admin-event-registration-list
 import CreateEventPage from "pages/admin/CreateEventPage";
 import DetailEventAdminPage from "pages/admin/DetailEventAdminPage";
 import EventRegistrationPage from "pages/admin/EventRegistrationPage";
 import UpdateEventPage from "pages/admin/UpdateEventPage";
+=======
+import UpdateEventPage from "pages/admin/event/UpdateEventPage";
+import CreateEventPage from "pages/admin/event/CreateEventPage";
+import DetailEventAdminPage from "pages/admin/event/DetailEventAdminPage";
+import EventTypeListPage from "pages/admin/event-type/EventTypeListPage";
+import EventRegistrationPage from "pages/admin/event/EventRegistrationPage";
+
+
+>>>>>>> local
 import AdminLayout from "pages/layouts/AdminLayout";
 import React from "react";
 import { Routes, Route, useParams } from 'react-router-dom';
