@@ -53,6 +53,7 @@ const EventTypeList: React.FC = () => {
     fetchEventTypes();
   }, []);
 
+  // Hàm xử lý sự kiện tạo mới Loại sự kiện
   const handleSaveNewEventType = async (name: string) => {
     setLoading(true);
     try {
@@ -99,6 +100,40 @@ const EventTypeList: React.FC = () => {
     }
   };
    
+  // Hàm xử lý chức năng xóa Loại sự kiện
+  const handleDelete = async (id: string) => {
+    if (!window.confirm("Bạn có chắc chắn muốn xóa loại sự kiện này?")) {
+      return;
+    }
+  
+    try {
+      const response = await deleteEventType(id);
+      console.log('Delete response:', response); // Kiểm tra phản hồi từ API
+      if (response && response.statusCode && response.statusCode === 204) {
+        // Sau khi xóa, reload lại danh sách loại sự kiện
+        await fetchEventTypes(); // Fetch lại danh sách sau khi xóa
+        const newTotalPages = Math.ceil(eventTypes.length / eventsPerPage);
+        if (currentPage > newTotalPages) {
+          setCurrentPage(Math.max(1, newTotalPages)); 
+        }
+        showToast({
+          statusCode: 500,
+          message: "Không thể xóa loại sự kiện"
+        });
+      }else {
+        // console.log("Xóa thất bại, mã trạng thái:", response?.statusCode);
+        await fetchEventTypes();
+        showToast({message: "Xóa loại sự kiện thành công", statusCode: 200});
+      }
+    } catch (error) {
+      console.error("Error deleting event type:", error);
+      showToast({
+        statusCode: 500,
+        message: "Không thể xóa loại sự kiện"
+      });
+    }
+  };
+
   const handleCancelCreate = () => {
     setIsCreating(false);
   };
@@ -185,6 +220,7 @@ const EventTypeList: React.FC = () => {
                             <Edit size={18} />
                           </button>
                           <button
+                            onClick={() => handleDelete(type.id)}
                             className="text-red-500 hover:text-red-700 transition-colors p-2 rounded-full hover:bg-red-100"
                           >
                             <Trash size={18} />
