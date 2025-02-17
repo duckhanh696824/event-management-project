@@ -16,8 +16,8 @@ import {
 } from 'api/eventTypeApi';
 import { showToast } from "utils/toast";
 import { useNavigate } from "react-router-dom";
-import CreateEventTypeForm from './CreateEventTypeForm';
 import UpdateEventTypePopUp from './UpdateEventTypePopUp';
+import CreateEventTypePopUp from './CreateEventTypePopUp';
 
 const EventTypeList: React.FC = () => {
   const [eventTypes, setEventTypes] = useState<EventType[]>([]);
@@ -213,7 +213,7 @@ const EventTypeList: React.FC = () => {
         </div>
 
         {isCreating && (
-          <CreateEventTypeForm
+          <CreateEventTypePopUp
             onSave={handleSaveNewEventType}
             onCancel={handleCancelCreate}
           />
