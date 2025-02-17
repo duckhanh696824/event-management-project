@@ -17,6 +17,7 @@ import {
 import { showToast } from "utils/toast";
 import { useNavigate } from "react-router-dom";
 import CreateEventTypeForm from './CreateEventTypeForm';
+import UpdateEventTypePopUp from './UpdateEventTypePopUp';
 
 const EventTypeList: React.FC = () => {
   const [eventTypes, setEventTypes] = useState<EventType[]>([]);
@@ -99,6 +100,37 @@ const EventTypeList: React.FC = () => {
       await fetchEventTypes();
     }
   };
+
+  //Hàm xử lý chức năng chỉnh sửa Loại sự kiện
+  const handleEdit = (eventType: EventType) => {
+    setCurrentEditingEventType(eventType);
+    setIsEditing(true);
+  };
+
+  const handleUpdateEventType = async (id: string, name: string) => {
+    try {
+      const response = await updateEventType(id, name);
+      if (response.statusCode === 200) {
+        setEventTypes(prev => prev.map(type => type.id === id ? response.data : type));
+
+        showToast({
+          statusCode: 200,
+          message: "Cập nhật loại sự kiện thành công"
+        });
+        // await fetchEventTypes();
+      } 
+    } catch (error) {
+      showToast({
+        statusCode: 500,
+        message: "Không thể cập nhật loại sự kiện"
+      });
+    } finally{
+        // Sau khi cập nhật thành công, đóng popup
+        setIsEditing(false); // Thoát popup
+        await fetchEventTypes();
+    }
+  };
+  
    
   // Hàm xử lý chức năng xóa Loại sự kiện
   const handleDelete = async (id: string) => {
@@ -136,6 +168,11 @@ const EventTypeList: React.FC = () => {
 
   const handleCancelCreate = () => {
     setIsCreating(false);
+  };
+
+  const handleCancelEdit = () => {
+    setIsEditing(false);
+    setCurrentEditingEventType(null);
   };
 
   if (loading && eventTypes.length === 0) {
@@ -215,6 +252,7 @@ const EventTypeList: React.FC = () => {
                       <td className="px-6 py-4 text-center">
                         <div className="flex justify-center space-x-2">
                           <button
+                            onClick={() => handleEdit(type)}
                             className="text-green-500 hover:text-green-700 transition-colors p-2 rounded-full hover:bg-green-100"
                           >
                             <Edit size={18} />
@@ -227,7 +265,13 @@ const EventTypeList: React.FC = () => {
                           </button>
                         </div>
                       </td>
-                  
+                      {isEditing && currentEditingEventType && (
+                        <UpdateEventTypePopUp
+                          eventType={currentEditingEventType}
+                          onSave={handleUpdateEventType}
+                          onCancel={handleCancelEdit}
+                        />
+                      )}
                     </tr>
                   ))}
                 </tbody>
