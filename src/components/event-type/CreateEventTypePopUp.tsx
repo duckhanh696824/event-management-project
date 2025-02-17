@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 
-interface CreateEventTypeFormProps {
+interface CreateEventTypePopUpProps {
   onSave: (name: string) => Promise<void>;
   onCancel: () => void;
 }
 
-const CreateEventTypeForm: React.FC<CreateEventTypeFormProps> = ({ onSave, onCancel }) => {
+const CreateEventTypePopUp: React.FC<CreateEventTypePopUpProps> = ({ onSave, onCancel }) => {
   const [newEventTypeName, setNewEventTypeName] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -101,4 +101,4 @@ const CreateEventTypeForm: React.FC<CreateEventTypeFormProps> = ({ onSave, onCan
   );
 };
 
-export default CreateEventTypeForm;
+export default CreateEventTypePopUp;
