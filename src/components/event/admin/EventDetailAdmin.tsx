@@ -124,7 +124,9 @@ const EventDetailAdmin: React.FC = () => {
 
   return (
     <div className="bg-background min-h-screen p-5 max-h-[500px] overflow-y-auto">
-      <div className="bg-white w-full max-w-4xl rounded-3xl shadow-lg p-10">
+
+      <div className="bg-white w-full max-w-7xl rounded-3xl shadow-lg p-10">
+
         {/* Form Header */}
         <div className="flex items-center justify-between">
         <button
