@@ -1,3 +1,4 @@
+import UserLayout from "pages/layouts/UserLayout";
 import React, { lazy } from "react";
 import { Routes, Route } from "react-router-dom";
 
@@ -9,10 +10,12 @@ const EventDetailPage = lazy(() => import("pages/user/EventDetail"));
 const AppRoutes = () => {
   return (
     <Routes>
-      <Route path="/" element={<Home/>} />
       <Route path="/login" element={<LoginPage/>} />
-      <Route path="/contact" element={<Contact/>} />
-      <Route path="/event/:id" element={<EventDetailPage/>} />
+      <Route path="/" element={<UserLayout />}>
+        <Route index element={<Home />} />
+        <Route path="/contact" element={<Contact/>} />
+        <Route path="/event/:id" element={<EventDetailPage/>} />
+      </Route>
     </Routes>
   );
 };

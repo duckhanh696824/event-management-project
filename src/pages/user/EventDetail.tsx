@@ -12,9 +12,7 @@ const EventDetailPage = () => {
   }, []);
   return (
     <div className="flex flex-col min-h-screen">
-      <Header></Header>
       <EventDetail/>
-      <Footer />
     </div>
   );
 };
