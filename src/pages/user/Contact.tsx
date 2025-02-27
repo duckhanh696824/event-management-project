@@ -6,9 +6,7 @@ import ContactForm from "components/contact/ContactForm";
 const Contact = () => {
     return (
         <div className="flex flex-col min-h-screen">
-        <Header></Header>
-        <ContactForm />
-        <Footer />
+          <ContactForm />
       </div>
     );
 };
