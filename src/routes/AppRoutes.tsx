@@ -1,4 +1,5 @@
 import UserLayout from "pages/layouts/UserLayout";
+import UserProfilePage from "pages/user/UserProfilePage";
 import React, { lazy } from "react";
 import { Routes, Route } from "react-router-dom";
 
@@ -15,6 +16,7 @@ const AppRoutes = () => {
         <Route index element={<Home />} />
         <Route path="/contact" element={<Contact/>} />
         <Route path="/event/:id" element={<EventDetailPage/>} />
+        <Route path="/profile/:id" element={<UserProfilePage/>} />
       </Route>
     </Routes>
   );

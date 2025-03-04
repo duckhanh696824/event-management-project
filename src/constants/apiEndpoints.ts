@@ -27,6 +27,15 @@ export const API_ENDPOINTS = {
   DROPDOWN: {
     DROPDOWN: `${API_BASE_URL}/event/dropdown-data`,
   },
+  USERS: {
+    GET_NICKNAME: `${API_BASE_URL}/user/get-nickname`,
+    GET_USER_INFO: `${API_BASE_URL}/user/get-user-info`,
+    CHANGE_PASSWORD: `${API_BASE_URL}/user/change-password`,
+    CHANGE_EMAIL: `${API_BASE_URL}/user/change-email`,
+    VERIFY_EMAIL: `${API_BASE_URL}/user/verify-email`,
+    CHANGE_PHONE_NUMBER: `${API_BASE_URL}/user/change-phone-number`,
+    SEARCH_MSSV: `${API_BASE_URL}/user/search-mssv`,
+  },
 } as const;
 
 export const generateDynamicEndpoint = (baseEndpoint: string, id?: string) => {
