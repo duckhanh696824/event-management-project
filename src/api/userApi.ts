@@ -45,7 +45,7 @@ export const getUserById = async (userId: string) => {
 export const changePassword = async (password: string) => {
   try {
     const response = await apiClient.post(API_ENDPOINTS.USERS.CHANGE_PASSWORD, { password });
-    return handleApiResponse(response.data);
+    return response.data.data;
   } catch (error) {
     throw error;
   }
