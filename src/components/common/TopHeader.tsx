@@ -121,7 +121,7 @@ const TopHeader = ({ setActiveTab }: { setActiveTab: (tab: string) => void }) =>
                     </li>
                     <li>
                       <button 
-                        onClick={() => goToPage("/settings")} 
+                        onClick={() => goToPage("/setting")} 
                         className="flex w-full items-center px-4 py-3 text-gray-700 hover:bg-gray-100 hover:font-medium hover:text-indigo-800"
                       >
                         <Settings className="w-4 h-4 mr-2" />
