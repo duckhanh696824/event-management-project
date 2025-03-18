@@ -27,7 +27,7 @@ const EventCard: React.FC<EventCardProps> = ({ event, onSelect }) => {
 
   return (
     <div
-      className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 ease-in-out transform hover:-translate-y-1 cursor-pointer flex flex-col lg:flex-row relative"
+      className="bg-white mb-4 rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 ease-in-out transform hover:-translate-y-1 cursor-pointer flex flex-col lg:flex-row relative"
       onClick={() => onSelect && onSelect(event)}
     >
       {/* Date Badge */}

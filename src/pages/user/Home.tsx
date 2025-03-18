@@ -1,9 +1,7 @@
 import React, { useEffect } from "react";
-import Header from "components/common/Header";
-import Footer from "components/common/Footer";
 import BannerUser from "components/common/BannerUser";
 import { isAuthenticated } from "api/Authapi";
-import EventList from "components/event/user/EventListUser";
+import UserEventTypeList from "components/event-type/user/UserEventTypeList";
 
 const Home = () => {
   useEffect(() => {
@@ -12,9 +10,9 @@ const Home = () => {
     }
   }, []);
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen bg-gray-50">
       <BannerUser />
-      <EventList/>
+      <UserEventTypeList />
     </div>
   );
 };
