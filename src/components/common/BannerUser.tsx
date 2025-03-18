@@ -159,6 +159,7 @@ const BannerUser = () => {
               <p className="text-gray-600 max-w-2xl mx-auto">
                 Nơi sẽ cập nhật những sự kiện, cuộc thi, hoạt động mới nhất từ Khoa Công nghệ Thông tin
               </p>
+              <div className="w-[70px] h-[5px] bg-indigo-700 rounded-full mx-auto mt-4"></div>
             </motion.div>
           )}
         </AnimatePresence>

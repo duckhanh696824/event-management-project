@@ -1,4 +1,5 @@
 import UserLayout from "pages/layouts/UserLayout";
+import UserEventListPage from "pages/user/UserEventListPage";
 import UserProfilePage from "pages/user/UserProfilePage";
 import UserSettingPage from "pages/user/UserSettingPage";
 import React, { lazy } from "react";
@@ -15,8 +16,10 @@ const AppRoutes = () => {
       <Route path="/login" element={<LoginPage/>} />
       <Route path="/" element={<UserLayout />}>
         <Route index element={<Home />} />
-        <Route path="/contact" element={<Contact/>} />
+        <Route path="/events" element={<UserEventListPage/>} />
+        <Route path="/events/:eventTypeId" element={<UserEventListPage/>} />
         <Route path="/event/:id" element={<EventDetailPage/>} />
+        <Route path="/contact" element={<Contact/>} />
         <Route path="/profile/:id" element={<UserProfilePage/>} />
         <Route path="/setting" element={<UserSettingPage />} />
       </Route>
