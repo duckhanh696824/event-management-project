@@ -1,6 +1,7 @@
 import { BarChart, Bell, Calendar, CheckSquare, Home, LogOut, Menu, Settings, Trophy, UserPlus } from "lucide-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { getUserInfo, isAuthenticated, logoutApi } from "api/Authapi";
 
 interface SidebarProps {
   isCollapsed: boolean;
@@ -9,7 +10,9 @@ interface SidebarProps {
 
 const AdminSidebar: React.FC<SidebarProps> = ({ isCollapsed, setIsCollapsed }) => {
   const location = useLocation();
-
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const menuSections = [
     {
       title: "TỔNG QUÁT",
@@ -29,11 +32,26 @@ const AdminSidebar: React.FC<SidebarProps> = ({ isCollapsed, setIsCollapsed }) =
       title: "VÙNG NGUY HIỂM",
       items: [
         { to: "/admin/settings", icon: <Settings />, label: "Cài đặt" },
-        { to: "/login", icon: <LogOut />, label: "Đăng xuất" },
+        { to: "#", icon: <LogOut />, label: "Đăng xuất" },
       ],
     },
   ];
 
+  useEffect(() => {
+    const userInfo = getUserInfo();
+    if (isAuthenticated() && userInfo) {
+      setIsLoggedIn(true);
+      setUsername(userInfo.nickname || userInfo.username || "User");
+      setEmail(userInfo.email);
+    } else {
+      setIsLoggedIn(false);
+    }
+  }, []);
+
+  const handleLogout = () => {
+    logoutApi();
+  };
+  
   return (
     <div className={`fixed top-0 left-0 h-screen ${
      isCollapsed ? "w-[82px]" : "w-72"
@@ -63,9 +81,9 @@ const AdminSidebar: React.FC<SidebarProps> = ({ isCollapsed, setIsCollapsed }) =
         {!isCollapsed && (
           <>
             <h2 className="mt-3 text-xl font-semibold uppercase tracking-wide">
-              Quản lý Sự kiện
+              {username}
             </h2>
-            <span className="block mt-1 text-sm text-white opacity-60">Mô tả nhỏ</span>
+            <span className="block mt-1 text-sm text-white opacity-60">{email}</span>
           </>
         )}
       </div>
@@ -90,6 +108,7 @@ const AdminSidebar: React.FC<SidebarProps> = ({ isCollapsed, setIsCollapsed }) =
               <Link
                 key={item.label}
                 to={item.to}
+                onClick={item.label === "Đăng xuất" ? handleLogout : undefined}
                 className={`group flex items-center ${isCollapsed ? "pb-[10px]" : "py-3 mb-1 px-9"} cursor-pointer transition-transform 
                   ${location.pathname === item.to
                     ? ` ${isCollapsed 

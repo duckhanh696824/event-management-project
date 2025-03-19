@@ -1,12 +1,19 @@
 // src/components/AdminTopBar.tsx
 import React from "react";
 import { Menu, Settings, LogOut } from "lucide-react"; // Import icons
+import { logoutApi } from "api/Authapi";
+import { Link } from "react-router-dom";
 
 interface AdminTopBarProps {
   onMenuClick: () => void; // Hàm xử lý khi nhấn nút menu
 }
 
 const AdminTopBar: React.FC<AdminTopBarProps> = ({ onMenuClick }) => {
+
+  const handleLogout = () => {
+    logoutApi();
+  };  
+
   return (
     <div className="bg-white shadow-md rounded-b-lg px-3 py-[6px] flex items-center justify-between">
       {/* Nút menu */}
@@ -16,11 +23,14 @@ const AdminTopBar: React.FC<AdminTopBarProps> = ({ onMenuClick }) => {
 
       {/* Nhóm các icon Setting và Logout */}
       <div className="flex gap-2">
-        <button className="p-3 rounded-full text-gray-600 hover:bg-gray-200 hover:bg-opacity-50">
+        <Link to="/admin/settings" className="p-3 rounded-full text-gray-600 hover:bg-gray-200 hover:bg-opacity-50">
           <Settings size={24} />
-        </button>
+        </Link>
         <button className="p-3 mr-2 rounded-full text-red-500 hover:bg-gray-200 hover:bg-opacity-50">
-          <LogOut size={24} />
+          <LogOut 
+            size={24} 
+            onClick={handleLogout}
+          />
         </button>
       </div>
     </div>
