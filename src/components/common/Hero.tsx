@@ -3,7 +3,7 @@ import { PhoneCall } from "lucide-react";
 
 const Hero = () => {
   return (
-    <section className="pb-7">
+    <section className="pb-7 z-30">
       <div className="container mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
         {/* Hero Search */}
         <div className="md:col-span-3">

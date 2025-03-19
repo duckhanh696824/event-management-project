@@ -36,6 +36,13 @@ export const API_ENDPOINTS = {
     CHANGE_PHONE_NUMBER: `${API_BASE_URL}/user/change-phone-number`,
     SEARCH_MSSV: `${API_BASE_URL}/user/search-mssv`,
   },
+  NOTIFICATIONS: {
+    GET_EVENT_NOTIFICATIONS: `${API_BASE_URL}/notification/get-event-notifications`,
+    GET_NOTIFICATIONS: `${API_BASE_URL}/notification/get-notifications`,
+    MARK_AS_READ: `${API_BASE_URL}/notification/mark-as-read`,
+    CREATE_EVENT_NOTIFICATION: `${API_BASE_URL}/notification/create-event-notification`,
+    POST_NOTIFY: `${API_BASE_URL}/event-registration/notify-registered-users`,
+  },
 } as const;
 
 export const generateDynamicEndpoint = (baseEndpoint: string, id?: string) => {

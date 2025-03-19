@@ -1,20 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  UserCircle,
-  LogOut,
-  User,
-  ChevronDown,
-  ChevronUp,
-  Menu,
-  Home,
-  Calendar,
-  MessageSquare,
-  Bell,
-} from "lucide-react";
+import { Bell } from "lucide-react";
 import { getUserInfo, isAuthenticated, logoutApi } from "api/Authapi";
 import TopHeader from "./TopHeader";
 import Hero from "./Hero";
+import NotificationDropdown from "components/notification/NotificationDropdown";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -108,13 +98,13 @@ const Header = () => {
                   </li>
                 </ul>
               </nav>
-              <div className="flex items-center space-x-6 mr-10">
-                <div className="relative">
-                  <Bell className="w-6 h-6 text-gray-700" />
-                  <span className="absolute -top-2 -right-2 bg-indigo-600 text-white text-xs font-bold w-5 h-5 flex items-center justify-center rounded-full">
-                    3
-                  </span>
-                </div>
+              <div className="flex items-center space-x-6 mr-10 relative">
+                {/* Chỉ hiển thị Bell khi đã đăng nhập */}
+                {isLoggedIn && (
+                  <div className="relative">
+                    <NotificationDropdown />
+                  </div>
+                )}
               </div>
             </div>
           </div>
