@@ -205,6 +205,7 @@ const CreateEventForm: React.FC = () => {
   return (
     <div className="bg-background min-h-screen p-5 max-h-[500px] overflow-y-auto">
       <div className="bg-white w-full max-w-7xl rounded-3xl shadow-lg p-10">
+
         {/* Form Header */}
         <div className="text-center mb-12">
           <h2 className="text-4xl font-bold text-indigo-800 mb-4">
