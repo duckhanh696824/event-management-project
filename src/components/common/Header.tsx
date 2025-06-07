@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Bell } from "lucide-react";
+import { Bell, CalendarCheck, ClipboardList } from "lucide-react";
 import { getUserInfo, isAuthenticated, logoutApi } from "api/Authapi";
 import TopHeader from "./TopHeader";
 import Hero from "./Hero";
@@ -101,7 +101,14 @@ const Header = () => {
               <div className="flex items-center space-x-6 mr-10 relative">
                 {/* Chỉ hiển thị Bell khi đã đăng nhập */}
                 {isLoggedIn && (
-                  <div className="relative">
+                  <div className="relative flex items-center">
+                    <button
+                      onClick={() => handleNavigation("/registered-events")}
+                      className="relative mb-1 p-3 rounded-full hover:bg-indigo-700 transition-colors text-gray-700 hover:text-white"
+                      title="Sự kiện đã đăng ký"
+                    >
+                      <CalendarCheck className="w-6 h-6 cursor-pointer" />
+                    </button>
                     <NotificationDropdown />
                   </div>
                 )}

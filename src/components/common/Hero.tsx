@@ -11,7 +11,7 @@ const Hero = () => {
             <div className="relative w-full md:w-3/4">
               <input
                 type="text"
-                placeholder="What do you need?"
+                placeholder="Nhập sự kiện bạn cần tìm?"
                 className="w-full p-3 border border-gray-300 focus:outline-none"
               />
             </div>
@@ -30,8 +30,8 @@ const Hero = () => {
               <PhoneCall className="text-indigo-700 w-5 h-5" />
             </div>
             <div>
-              <h5 className="text-lg font-semibold text-gray-900">+65 11.188.888</h5>
-              <span className="text-sm text-gray-600">Support 24/7 time</span>
+              <h5 className="text-lg font-semibold text-gray-900">(028) 7101 2388</h5>
+              <span className="text-sm text-gray-600">Hỗ trợ giờ hành chính</span>
             </div>
           </div>
         </div>

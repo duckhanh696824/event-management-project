@@ -194,6 +194,7 @@ export const getRegistrationStatus = async (
     return handleApiError(error);
   }
 };
+
 export const uploadEventImage = async (
   file: File,
 ): Promise<{ data: { base64Image: string } }> => {
@@ -222,22 +223,34 @@ export const uploadEventImage = async (
   }
 };
 
+export const getMyRegisteredEvents = async (): Promise<ApiResponse<Event[]>> => {
+  try {
+    const response = await apiClient.get(API_ENDPOINTS.EVENTS.MY_REGISTERED_EVENTS);
+    return response.data;
+  } catch (error) {
+    return handleApiError(error);
+  }
+};
 
 export const createEventCheckin = async (
-  data: { event_id: string; times?: number; refresh_sec?: number }
+  eventId: string, 
+  times: number = 1, 
+  refreshSec: number = 60
 ): Promise<ApiResponse<any>> => {
   try {
     const response = await apiClient.post(
-      API_ENDPOINTS.EVENTS.CREATE_CHECKIN,
-      data
+      API_ENDPOINTS.EVENTS.CREATE_CHECKIN, 
+      {
+        event_id: eventId,
+        times: times,
+        refresh_sec: refreshSec
+      }
     );
     return handleApiResponse(response.data);
   } catch (error) {
     return handleApiError(error);
   }
 };
-
-
 
 export const getEventCheckins = async (
   eventId: string
@@ -255,7 +268,6 @@ export const getEventCheckins = async (
   }
 };
 
-
 export const generateCheckinQR = async (
   checkinDetailId: string
 ): Promise<ApiResponse<any>> => {
@@ -271,8 +283,6 @@ export const generateCheckinQR = async (
     return handleApiError(error);
   }
 };
-
-
 /**
  * Handles check-in or check-out action for an event
  */
@@ -316,7 +326,6 @@ export const handleCheckInOut = async (
     return handleApiError(error);
   }
 };
-
 
 /**
  * Gets check-in status for an event
@@ -370,7 +379,6 @@ export const getCheckInStatus = async (
   }
 };
 
-
 export const manualCheckIn = async (
   checkinDetailId: string,
   username: string
@@ -388,7 +396,6 @@ export const manualCheckIn = async (
     return handleApiError(error);
   }
 };
-
 
 /**
  * Gets the list of students who have checked in for a specific check-in session

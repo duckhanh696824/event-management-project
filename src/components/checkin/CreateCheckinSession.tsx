@@ -1,13 +1,16 @@
 import React, { useState } from "react";
 import { XCircle } from "lucide-react";
 import { createEventCheckin } from "api/eventsApi";
+import { toast } from "react-toastify";
 
 const CreateCheckinSession = ({
   onClose,
-  eventId
+  eventId,
+  onCreated
 }: { 
   onClose: () => void;
   eventId: string;
+  onCreated: () => void;
 }) => {
   const [sessionName, setSessionName] = useState("");
   const [repeatCount, setRepeatCount] = useState(1);
@@ -15,21 +18,24 @@ const CreateCheckinSession = ({
 
   const handleCreate = async () => {
     try {
-      const payload = {
-        title: sessionName,
+      console.log("✅ Tham số gửi lên:", {
+        eventId,
         times: repeatCount,
-        refresh_sec: qrLoadTime,
-        event_id: eventId,
-      };
-      console.log("✅ Payload gửi lên: ", payload);
-      const response = await createEventCheckin(payload);
-      console.log("✅ Tạo phiên điểm danh thành công:", response);
+        refreshSec: qrLoadTime,
+      });
+  
+      const response = await createEventCheckin(eventId, repeatCount, qrLoadTime);
+  
+      toast.success("Tạo phiên điểm danh thành công!");
       onClose();
-    } catch (error) {
+      onCreated();
+    } catch (error: any) {
       console.error("❌ Lỗi khi tạo phiên điểm danh:", error);
+      toast.error(
+        error?.response?.data?.message || "Tạo phiên điểm danh thất bại!"
+      );
     }
   };
-
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">

@@ -3,6 +3,7 @@ import { Plus, QrCode, ListChecks, FileText } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
 import CreateCheckinSession from "./CreateCheckinSession";
 import { getEventCheckins } from "api/eventsApi";
+import { getUserById } from "api/userApi";
 
 
 const MainCheckinList = () => {
@@ -10,27 +11,42 @@ const MainCheckinList = () => {
   const [selectedSession, setSelectedSession] = useState<any>(null);
   const [showCreatePopup, setShowCreatePopup] = useState(false);
   const [sessions, setSessions] = useState<any[]>([]);
+  const [creatorNickname, setCreatorNickname] = useState<string | null>(null);
   const { eventId } = useParams();
   const navigate = useNavigate();
 
-  const data = [
-    { id: 1, name: "Phiên điểm danh 1", time: "21/03/2025 - 09:00", status: true, creator: "Nguyễn Văn A", checkedIn: 20 },
-    { id: 2, name: "Phiên điểm danh 2", time: "21/03/2025 - 14:00", status: false, creator: "Nguyễn Văn B", checkedIn: 15 },
-  ];
+  const fetchCheckinList = async () => {
+    try {
+      if (!eventId) return;
+      const response = await getEventCheckins(eventId);
+      setSessions(response.data);
+    } catch (error) {
+      console.error("Lỗi khi lấy danh sách phiên:", error);
+    }
+  };
+  
+  useEffect(() => {
+    fetchCheckinList();
+  }, [eventId]);
+  
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchUser = async () => {
+      if (!selectedSession?.created_by) return;
+  
       try {
-        if (!eventId) return; // Check nếu chưa có eventId
-        const response = await getEventCheckins(eventId);
-        setSessions(response.data);  // Giả sử backend trả về array
+        console.log("Gọi API user với ID:", selectedSession.created_by);
+        const user = await getUserById(selectedSession.created_by); // Sử dụng apiClient
+        console.log("Kết quả user:", user);
+        const nickname = user.nickname || "Không rõ"; // Cập nhật nickname
+        setCreatorNickname(nickname);
       } catch (error) {
-        console.error("Lỗi khi lấy danh sách phiên:", error);
+        console.error("Lỗi khi lấy nickname người tạo:", error);
       }
     };
   
-    fetchData();
-  }, [eventId]);
+    fetchUser();
+  }, [selectedSession]);
 
   const handleDetailClick = (item: any) => {
     setSelectedSession(item);
@@ -66,8 +82,8 @@ const MainCheckinList = () => {
               </tr>
             </thead>
             <tbody className="text-gray-700">
-             {sessions.map((item: any) => ( 
-                <tr key={item.id} className="border-t border-gray-200 hover:bg-gray-50">
+             {sessions.map((item: any, index) => ( 
+                <tr key={item.id || item._id || index} className="border-t border-gray-200 hover:bg-gray-50">
                   <td className="py-4 px-4">{item.name}</td>
                   {!showDetail && <td className="py-4 px-4">{item.created_at}</td>}
                   <td className="py-4 px-4">
@@ -105,7 +121,7 @@ const MainCheckinList = () => {
           <div className="w-1/3 bg-white rounded-xl shadow p-6 space-y-4">
             <h2 className="text-lg font-semibold">Chi tiết phiên</h2>
             <p><span className="font-medium">Thời gian:</span> {selectedSession.created_at}</p>
-            <p><span className="font-medium">Người tạo phiên:</span> {selectedSession.created_by}</p>
+            <p><span className="font-medium">Người tạo phiên:</span> {creatorNickname}</p>
             <p><span className="font-medium">Đã checkin:</span> {selectedSession.checkedIn} người</p>
 
             <div className="flex gap-4 mt-6">
@@ -130,8 +146,12 @@ const MainCheckinList = () => {
       </div>
             {/* Popup Tạo phiên điểm danh */}
             {showCreatePopup && (
-        <CreateCheckinSession eventId={eventId as string} onClose={() => setShowCreatePopup(false)} />
-      )}
+              <CreateCheckinSession 
+                eventId={eventId as string} 
+                onClose={() => setShowCreatePopup(false)} 
+                onCreated={fetchCheckinList} 
+              />
+            )}
     </div>
   );
 };

@@ -122,9 +122,10 @@ const NotificationDropdown: React.FC = () => {
       <button 
         id="notification-button"
         onClick={toggleDropdown} 
-        className="relative p-3 rounded-full hover:bg-indigo-700 transition-colors"
+        className="relative p-3 rounded-full hover:bg-indigo-700 transition-colors text-gray-700 hover:text-white"
+        title="Thông báo"
       >
-        <Bell className="w-6 h-6 text-gray-700 cursor-pointer hover:text-white" />
+        <Bell className="w-6 h-6 cursor-pointer" />
         {unreadCount > 0 && (
           <span className="absolute -top-2 -right-2 bg-indigo-600 inline-flex items-center justify-center w-5 h-5 text-xs font-bold text-white rounded-full">
             {unreadCount}

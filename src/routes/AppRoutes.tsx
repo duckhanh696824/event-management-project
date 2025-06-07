@@ -9,6 +9,8 @@ const LoginPage = lazy(() => import("pages/login/Login"));
 const Home = lazy(() => import("pages/user/Home"));
 const Contact = lazy(() => import("pages/user/Contact"));
 const EventDetailPage = lazy(() => import("pages/user/EventDetail"));
+const CertificateListPage = lazy(() => import("pages/user/CertificateListPage"));
+const RegisteredEventPage = lazy(() => import("pages/user/RegisteredEventPage"));
 
 const AppRoutes = () => {
   return (
@@ -22,6 +24,8 @@ const AppRoutes = () => {
         <Route path="/contact" element={<Contact/>} />
         <Route path="/profile/:id" element={<UserProfilePage/>} />
         <Route path="/setting" element={<UserSettingPage />} />
+        <Route path="/certificates" element={<CertificateListPage />} />
+        <Route path="/registered-events" element={<RegisteredEventPage />} />
       </Route>
     </Routes>
   );

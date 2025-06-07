@@ -13,6 +13,7 @@ export const API_ENDPOINTS = {
     REGISTRATION_STATUS: `${API_BASE_URL}/event-registration/get-registration-status`,
     UPLOAD_IMAGE: `${API_BASE_URL}/event/upload-image`,
     REGISTRATION_USER: `${API_BASE_URL}/event-registration/get-registered-users`,
+    MY_REGISTERED_EVENTS: `${API_BASE_URL}/event-registration/my-events`,
     UPLOAD_POSTER: `${API_BASE_URL}/event/upload-poster`,
     UPDATE_QR_POSITION: `${API_BASE_URL}/event/update-qr-position`,
     GET_POSTER_DATA: `${API_BASE_URL}/event/get-poster-data`,
