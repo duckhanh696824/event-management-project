@@ -1,4 +1,4 @@
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, Sparkles } from "lucide-react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
 import { Swiper as SwiperType } from "swiper";
@@ -41,10 +41,13 @@ const UserEventTypeList = () => {
   }, [navigate]);
   
   return (
-    <section className="py-5 mb-10 flex justify-center w-full"> 
+    <section className="pt-3 pb-5 mb-12 flex justify-center w-full"> 
       <div className="container text-center"> 
         <div className="flex justify-between items-center mb-10 px-8">
-          <h2 className="text-3xl font-bold">Loại sự kiện</h2>
+          <h2 className="text-3xl font-bold flex items-center space-x-2">
+            <Sparkles className="w-7 h-7 text-indigo-600" />
+            <span>Loại sự kiện</span>
+          </h2>
           <div className="flex items-center space-x-2">
             <a 
               href="/events" 
@@ -73,14 +76,16 @@ const UserEventTypeList = () => {
             <SwiperSlide key={category.id} className="text-center">
               <button
                 onClick={() => handleSelectType(category.id)}
-                className="block focus:outline-none"
+                className="block focus:outline-none ml-8"
               >
-                <img
-                  src={category.img}
-                  alt={category.title}
-                  className="rounded-full w-[168px] h-[168px] mx-auto"
-                />
-                <h4 className="text-lg font-medium mt-3">{category.title}</h4>
+                <div className="hover:text-indigo-800 transition duration-300">
+                  <img
+                    src={category.img}
+                    alt={category.title}
+                    className="rounded-full w-[168px] h-[168px] mx-auto transition duration-300 hover:shadow-xl hover:border hover:border-indigo-700 "
+                  />
+                  <h4 className="text-lg font-medium mt-3">{category.title}</h4>
+                </div>
               </button>
             </SwiperSlide>
           ))}

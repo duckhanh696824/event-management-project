@@ -6,7 +6,7 @@ import {
 import { ApiResponse } from "types/apiResponse";
 // Import the custom API client
 import apiClient from "./api";
-import { handleApiResponse } from "constants/handleResponse";
+import { handleApiResponse, handleApiError } from "constants/handleResponse";
 import { showToast } from "utils/toast";
 
 interface DropdownDataResponse {
@@ -18,25 +18,6 @@ interface DropdownDataResponse {
     eventTypes: EventType[];
   };
 }
-
-// Centralized error handling function
-const handleApiError = (error: any): never => {
-  // Extract meaningful error message
-  const errorMessage =
-    error.response?.data?.message ||
-    error.response?.data?.error ||
-    "An unexpected error occurred";
-
-  // Log the full error for debugging
-  console.error("API Error Details:", {
-    message: errorMessage,
-    status: error.response?.status,
-    data: error.response?.data,
-  });
-
-  // Throw a standardized error
-  throw new Error(errorMessage);
-};
 
 export const fetchDropdownData = async (): Promise<
   DropdownDataResponse["data"]
@@ -213,6 +194,7 @@ export const getRegistrationStatus = async (
     return handleApiError(error);
   }
 };
+
 export const uploadEventImage = async (
   file: File,
 ): Promise<{ data: { base64Image: string } }> => {
@@ -238,5 +220,199 @@ export const uploadEventImage = async (
   } catch (error) {
     console.error("Image upload failed", error);
     throw new Error("Tải ảnh thất bại");
+  }
+};
+
+export const getMyRegisteredEvents = async (): Promise<ApiResponse<Event[]>> => {
+  try {
+    const response = await apiClient.get(API_ENDPOINTS.EVENTS.MY_REGISTERED_EVENTS);
+    return response.data;
+  } catch (error) {
+    return handleApiError(error);
+  }
+};
+
+export const createEventCheckin = async (
+  eventId: string, 
+  times: number = 1, 
+  refreshSec: number = 60
+): Promise<ApiResponse<any>> => {
+  try {
+    const response = await apiClient.post(
+      API_ENDPOINTS.EVENTS.CREATE_CHECKIN, 
+      {
+        event_id: eventId,
+        times: times,
+        refresh_sec: refreshSec
+      }
+    );
+    return handleApiResponse(response.data);
+  } catch (error) {
+    return handleApiError(error);
+  }
+};
+
+export const getEventCheckins = async (
+  eventId: string
+): Promise<ApiResponse<any>> => {
+  try {
+    const response = await apiClient.post(
+      API_ENDPOINTS.EVENTS.GET_CHECKIN, 
+      {
+        event_id: eventId
+      }
+    );
+    return response.data;
+  } catch (error) {
+    return handleApiError(error);
+  }
+};
+
+export const generateCheckinQR = async (
+  checkinDetailId: string
+): Promise<ApiResponse<any>> => {
+  try {
+    const response = await apiClient.post(
+      API_ENDPOINTS.EVENTS.GENERATE_QR, 
+      {
+        checkin_detail_id: checkinDetailId
+      }
+    );
+    return response.data;
+  } catch (error) {
+    return handleApiError(error);
+  }
+};
+/**
+ * Handles check-in or check-out action for an event
+ */
+export const handleCheckInOut = async (
+  eventId: string,
+  actionType: 'checkin' | 'checkout'
+): Promise<ApiResponse<any>> => {
+  try {
+    const checkinsResponse = await getEventCheckins(eventId);
+    
+    if (checkinsResponse.statusCode !== 200) {
+      return {
+        statusCode: checkinsResponse.statusCode || 500,
+        message: checkinsResponse.message || 'Failed to get check-in sessions',
+        data: null
+      };
+    }
+
+    const targetSession = checkinsResponse.data?.find((session: any) => 
+      actionType === 'checkin' ? session.order === 1 : session.order === 2
+    );
+
+    if (!targetSession) {
+      return {
+        statusCode: 404,
+        message: `${actionType} session not found`,
+        data: null
+      };
+    }
+
+    const qrResponse = await generateCheckinQR(targetSession.checkindetail_id);
+    
+    return {
+      ...qrResponse,
+      data: {
+        ...qrResponse.data,
+        actionType
+      }
+    };
+  } catch (error) {
+    return handleApiError(error);
+  }
+};
+
+/**
+ * Gets check-in status for an event
+ */
+export const getCheckInStatus = async (
+  eventId: string
+): Promise<ApiResponse<{
+  canCheckIn: boolean;
+  canCheckOut: boolean;
+  nextAction: string;
+}>> => {
+  try {
+    const response = await getEventCheckins(eventId);
+    
+    if (response.statusCode !== 200 || !response.data) {
+      return {
+        statusCode: response.statusCode || 500,
+        message: response.message || 'Failed to get check-in status',
+        data: {
+          canCheckIn: false,
+          canCheckOut: false,
+          nextAction: ''
+        }
+      };
+    }
+
+    const sessions = response.data;
+    const checkinSession = sessions.find((s: any) => s.order === 1);
+    const checkoutSession = sessions.find((s: any) => s.order === 2);
+
+    return {
+      statusCode: 200,
+      message: "Success",
+      data: {
+        canCheckIn: checkinSession?.status === 0,
+        canCheckOut: Boolean(checkoutSession?.status === 0 && checkinSession?.status === 1),
+        nextAction: checkinSession?.status === 0 ? 'checkin' : 
+                  checkoutSession?.status === 0 ? 'checkout' : ''
+      }
+    };
+  } catch (error) {
+    return {
+      statusCode: 500,
+      message: 'An error occurred while getting check-in status',
+      data: {
+        canCheckIn: false,
+        canCheckOut: false,
+        nextAction: ''
+      }
+    };
+  }
+};
+
+export const manualCheckIn = async (
+  checkinDetailId: string,
+  username: string
+): Promise<ApiResponse<any>> => {
+  try {
+    const response = await apiClient.post(
+      API_ENDPOINTS.EVENTS.MANUAL_CHECKIN,
+      {
+        checkin_detail_id: checkinDetailId,
+        username: username
+      }
+    );
+    return handleApiResponse(response.data);
+  } catch (error) {
+    return handleApiError(error);
+  }
+};
+
+/**
+ * Gets the list of students who have checked in for a specific check-in session
+ * @param checkinDetailId The ID of the check-in detail/session
+ * @returns ApiResponse with the list of checked-in students
+ */
+export const getCheckedInStudents = async (
+  checkinDetailId: string,
+  page: number = 1,
+  pageSize: number = 10
+): Promise<ApiResponse<any>> => {
+  try {
+    const response = await apiClient.get(
+      `${API_ENDPOINTS.EVENTS.GET_CHECKIN_RESULTS}?checkin_detail_id=${checkinDetailId}&page=${page}&page_size=${pageSize}`
+    );
+    return response.data;
+  } catch (error) {
+    return handleApiError(error);
   }
 };

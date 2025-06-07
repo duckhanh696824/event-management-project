@@ -53,7 +53,7 @@ const TopHeader = ({ setActiveTab }: { setActiveTab: (tab: string) => void }) =>
           {/* Email */}
           <div className="flex items-center">
             <Mail className="w-4 h-4 mr-2 text-gray-900 font-bold" strokeWidth={2} />
-            <span>support@example.com</span>
+            <span>khoa.cntt@hutech.edu.vn</span>
           </div>
 
           {/* Line Separator */}
@@ -62,7 +62,7 @@ const TopHeader = ({ setActiveTab }: { setActiveTab: (tab: string) => void }) =>
           {/* Location */}
           <div className="flex items-center">
             <MapPin className="w-4 h-4 mr-2 text-gray-900 font-bold strokeWidth={2}" />
-            <span>Hồ Chí Minh, Việt Nam</span>
+            <span>Văn phòng E1-02.06</span>
           </div>
         </div>
 

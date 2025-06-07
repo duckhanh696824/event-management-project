@@ -6,7 +6,7 @@ const UserEventListPage = () => {
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">
-      <div className="container mx-auto py-9 mb-4 text-center">
+      <div className="container mx-auto mt-12 mb-10 text-center">
         <h3 className="text-3xl font-bold text-gray-800 mb-3">
           Danh sách sự kiện
         </h3>

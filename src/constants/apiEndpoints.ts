@@ -13,9 +13,15 @@ export const API_ENDPOINTS = {
     REGISTRATION_STATUS: `${API_BASE_URL}/event-registration/get-registration-status`,
     UPLOAD_IMAGE: `${API_BASE_URL}/event/upload-image`,
     REGISTRATION_USER: `${API_BASE_URL}/event-registration/get-registered-users`,
+    MY_REGISTERED_EVENTS: `${API_BASE_URL}/event-registration/my-events`,
     UPLOAD_POSTER: `${API_BASE_URL}/event/upload-poster`,
     UPDATE_QR_POSITION: `${API_BASE_URL}/event/update-qr-position`,
     GET_POSTER_DATA: `${API_BASE_URL}/event/get-poster-data`,
+    CREATE_CHECKIN: `${API_BASE_URL}/event-checkin/create-check-in`,
+    GENERATE_QR: `${API_BASE_URL}/event-checkin/generate-qr`,
+    GET_CHECKIN: `${API_BASE_URL}/event-checkin/get-check-in`,
+    MANUAL_CHECKIN: `${API_BASE_URL}/event-checkin/manual-check-in`,
+    GET_CHECKIN_RESULTS: `${API_BASE_URL}/event-checkin/get-check-in-results`,
   },
   EVENT_TYPES: {
     GET_ALL: `${API_BASE_URL}/event-type/get-all`,
@@ -42,6 +48,12 @@ export const API_ENDPOINTS = {
     MARK_AS_READ: `${API_BASE_URL}/notification/mark-as-read`,
     CREATE_EVENT_NOTIFICATION: `${API_BASE_URL}/notification/create-event-notification`,
     POST_NOTIFY: `${API_BASE_URL}/event-registration/notify-registered-users`,
+  },
+  CHECKINS: {
+    CHECKIN: `${API_BASE_URL}/check-in/check-in`,                         // API check-in
+    GET_CHECKIN_LIST_BY_EVENT: `${API_BASE_URL}/check-in/get-check-in-list`, // Lấy danh sách check-in theo event
+    GET_CHECKIN_HISTORY: `${API_BASE_URL}/check-in/history`,             // Lịch sử check-in của user
+    CHECKIN_BY_QR: `${API_BASE_URL}/check-in/check-in-by-qr`,            // Check-in bằng QR
   },
 } as const;
 

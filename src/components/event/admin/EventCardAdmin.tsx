@@ -78,6 +78,15 @@ const EventCard: React.FC<EventCardProps> = ({
     });
   };
 
+  const handleCheckin = () => {
+    navigate(`/admin/event-checkin/${event.id}`, {
+      state: {
+        eventId: event.id,
+      },
+    });
+  };
+
+
   const handleUpdate = () => {
     navigate(`/admin/event-update/${event.id}`, {
       state: {
@@ -128,7 +137,7 @@ const EventCard: React.FC<EventCardProps> = ({
           <button
             className="text-blue-500 hover:text-blue-700 transition-colors p-2 rounded-full hover:bg-blue-100"
             aria-label="Thiết kế poster"
-            onClick={handleUploadPoster} // Thêm sự kiện onClick
+            onClick={handleCheckin} // Thêm sự kiện onClick
           >
             <Paperclip size={18} />
           </button>

@@ -7,6 +7,7 @@ import EventRegistrationPage from "pages/admin/event/EventRegistrationPage";
 import AdminLayout from "pages/layouts/AdminLayout";
 import React from "react";
 import { Routes, Route, useParams } from 'react-router-dom';
+import CheckinSessionsPage from "pages/admin/checkin/CheckinSessionsPage";
 
 
 // const PosterEditorWrapper = () => {
@@ -30,9 +31,8 @@ const AdminRoutes = () => {
         <Route path="/admin/event-detail/:eventId" element={<DetailEventAdminPage/>} />
         <Route path="/admin/event-update/:eventId" element={<UpdateEventPage />} />
         <Route path="/admin/event-registrations/:eventId" element={<EventRegistrationPage />} />
+        <Route path="/admin/event-checkin/:eventId" element={<CheckinSessionsPage />} />
         <Route path="event-types" element={<EventTypeListPage />} />
-        {/* <Route path="registration" element={<Registration />} />
-        <Route path="event-types" element={<EventTypeList />} /> */}
         {/*<Route path="notifications" element={<Notifications />} />
         <Route path="attendance" element={<Attendance />} />
         <Route path="results" element={<Results />} />
