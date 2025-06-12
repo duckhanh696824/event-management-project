@@ -10,6 +10,7 @@ const Home = lazy(() => import("pages/user/Home"));
 const Contact = lazy(() => import("pages/user/Contact"));
 const EventDetailPage = lazy(() => import("pages/user/EventDetail"));
 const CertificateListPage = lazy(() => import("pages/user/CertificateListPage"));
+const CertificateDetailPage = lazy(() => import("pages/user/CertificateDetailPage"));
 const RegisteredEventPage = lazy(() => import("pages/user/RegisteredEventPage"));
 
 const AppRoutes = () => {
@@ -25,8 +26,10 @@ const AppRoutes = () => {
         <Route path="/profile/:id" element={<UserProfilePage/>} />
         <Route path="/setting" element={<UserSettingPage />} />
         <Route path="/certificates" element={<CertificateListPage />} />
+        {/* <Route path="certificate-detail/:id" element={<CertificateDetailPage />} /> */}
         <Route path="/registered-events" element={<RegisteredEventPage />} />
       </Route>
+      <Route path="certificate-detail/:id" element={<CertificateDetailPage />} />
     </Routes>
   );
 };

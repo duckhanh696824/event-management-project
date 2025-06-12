@@ -55,6 +55,10 @@ export const API_ENDPOINTS = {
     GET_CHECKIN_HISTORY: `${API_BASE_URL}/check-in/history`,             // Lịch sử check-in của user
     CHECKIN_BY_QR: `${API_BASE_URL}/check-in/check-in-by-qr`,            // Check-in bằng QR
   },
+  CERTIFICATES: {
+    MY_CERTIFICATES: `${API_BASE_URL}/certificate-event/my-certified-events`,
+    GET_BY_ID: `${API_BASE_URL}/certificate-event/view`,
+  },
 } as const;
 
 export const generateDynamicEndpoint = (baseEndpoint: string, id?: string) => {
