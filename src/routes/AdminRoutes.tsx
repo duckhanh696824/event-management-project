@@ -8,6 +8,9 @@ import AdminLayout from "pages/layouts/AdminLayout";
 import React from "react";
 import { Routes, Route, useParams } from 'react-router-dom';
 import CheckinSessionsPage from "pages/admin/checkin/CheckinSessionsPage";
+import CertificateTable from "components/certificate/admin/CertificateTable";
+import CreateCertificate from "components/certificate/admin/CreateCertificate";
+import UpdateCertificate from "components/certificate/admin/UpdateCertificate";
 
 
 // const PosterEditorWrapper = () => {
@@ -41,6 +44,9 @@ const AdminRoutes = () => {
         {/* <Route path="events/:eventId/poster/edit" element={<PosterEditorWrapper />} />
         <Route path="events/:eventId/poster" element={<PosterViewerWrapper />} />
         <Route  path="/admin/event-registrations/:eventId" element={<RegistrationUser />}  /> */}
+        <Route path="certificate-templates" element={<CertificateTable />} />
+        <Route path="create-certificate-template" element={<CreateCertificate />} />
+        <Route path="update-certificate-template/:id" element={<UpdateCertificate />} />
         </Route>
       </Routes>
   );
