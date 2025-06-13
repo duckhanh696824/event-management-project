@@ -55,6 +55,15 @@ export const API_ENDPOINTS = {
     GET_CHECKIN_HISTORY: `${API_BASE_URL}/check-in/history`,             // Lịch sử check-in của user
     CHECKIN_BY_QR: `${API_BASE_URL}/check-in/check-in-by-qr`,            // Check-in bằng QR
   },
+  CERTIFICATE_TEMPLATE: {
+    GET_ALL: `${API_BASE_URL}/certificate-template/get-all`,
+    GET_BY_ID: `${API_BASE_URL}/certificate-template/get-by-id`,
+    CREATE: `${API_BASE_URL}/certificate-template/create`,
+    UPDATE: `${API_BASE_URL}/certificate-template/update`,
+    DELETE: `${API_BASE_URL}/certificate-template/delete`,
+    UPLOAD_BACKGROUND: `${API_BASE_URL}/certificate-template/upload-background`,
+    DROPDOWN_DATA: `${API_BASE_URL}/certificate-template/dropdown-data`,
+  },
   CERTIFICATES: {
     MY_CERTIFICATES: `${API_BASE_URL}/certificate-event/my-certified-events`,
     GET_BY_ID: `${API_BASE_URL}/certificate-event/view`,
